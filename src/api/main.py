@@ -13,13 +13,16 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
 from .db import init_db
-from .models import PaymentRequest, RefundRequest, SyncRequest
+from .models import CaptureRequest, PaymentRequest, RefundRequest, SyncRequest
 from .service import (
     ServiceError,
     cancel_payment,
+    capture_payment,
     create_payment,
     get_payment,
+    get_settlement,
     refund_payment,
+    settle_terminal,
     sync_transactions,
 )
 
@@ -33,7 +36,7 @@ if not logger.handlers:
 
 app = FastAPI(
     title="POS QA Lab - Simulated Payment API",
-    version="0.1.0",
+    version="0.2.0",
     description=(
         "API de laboratorio para jornadas de pagamento. Nao e um adquirente real, "
         "nao implementa EMV, ISO 8583 de producao ou PCI PTS."
@@ -157,6 +160,58 @@ def refund(payment_id: str, request: Request, payload: RefundRequest | None = No
         refunded_amount=body["refunded_amount"],
     )
     return body
+
+
+@app.post("/api/v1/payments/{payment_id}/capture")
+def capture(payment_id: str, request: Request, payload: CaptureRequest | None = None):
+    cid = correlation(request)
+    try:
+        body = capture_payment(payment_id, payload or CaptureRequest(), cid)
+    except ServiceError as exc:
+        log_event("capture_rejected", correlation_id=cid, payment_id=payment_id, code=exc.code)
+        return error_response(exc, cid)
+    log_event(
+        "payment_captured",
+        correlation_id=cid,
+        payment_id=payment_id,
+        status=body["status"],
+        captured_amount=body["captured_amount"],
+    )
+    return body
+
+
+@app.post("/api/v1/terminals/{terminal_id}/settlement")
+def settlement(
+    terminal_id: str,
+    request: Request,
+    idempotency_key: Annotated[
+        str, Header(alias="Idempotency-Key", min_length=8, max_length=128)
+    ],
+):
+    cid = correlation(request)
+    try:
+        body = settle_terminal(terminal_id, cid, idempotency_key)
+    except ServiceError as exc:
+        log_event("settlement_rejected", correlation_id=cid, terminal_id=terminal_id, code=exc.code)
+        return error_response(exc, cid)
+    log_event(
+        "terminal_settled",
+        correlation_id=cid,
+        terminal_id=terminal_id,
+        settlement_id=body["settlement_id"],
+        status=body["status"],
+        net_amount=body["net_amount"],
+    )
+    return JSONResponse(status_code=201, content=body)
+
+
+@app.get("/api/v1/settlements/{settlement_id}")
+def read_settlement(settlement_id: str, request: Request):
+    cid = correlation(request)
+    try:
+        return get_settlement(settlement_id)
+    except ServiceError as exc:
+        return error_response(exc, cid)
 
 
 @app.post("/api/v1/terminals/{terminal_id}/sync")

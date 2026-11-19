@@ -14,14 +14,14 @@ idempotência, cancelamento, estorno, parcelamento, reinício e atualização de
 
 | Métrica | Valor |
 |---|---:|
-| Casos Robot executados | **23** |
-| Aprovados | **23** |
+| Casos Robot executados | **37** |
+| Aprovados | **37** |
 | Reprovados | **0** |
-| Tempo somado dos casos | **0,64 s (núcleo/ISO) + 104,69 s (device)** |
-| Testes unitários Python | **25 aprovados** |
+| Tempo somado dos casos | **4,01 s (núcleo/ISO) + 104,69 s (device)** |
+| Testes unitários Python | **39 aprovados** |
 | Casos de dispositivo | **5/5 aprovados em emulador Android 16** |
-| Defeitos do laboratório corrigidos | **3** (+3 achados de automação) |
-| CI | **18/18 no Ubuntu + Python 3.12** |
+| Defeitos do laboratório corrigidos | **3** (+5 achados de automação/implementação) |
+| CI | **32/32 no Ubuntu + Python 3.12** |
 
 Detalhes em [relatório de execução](docs/05_relatorio-execucao.md) e [relatório de defeitos](docs/06_relatorio-defeitos.md).
 
@@ -31,14 +31,16 @@ Detalhes em [relatório de execução](docs/05_relatorio-execucao.md) e [relató
 
 - **Venda** aprovada e negada, com código de resposta.
 - **Cancelamento** antes da captura.
-- **Estorno** total e parcial.
+- **Pré-autorização + captura** total e parcial.
+- **Estorno** total e parcial, limitado ao valor capturado.
 - **Parcelamento** com arredondamento de centavos.
-- **Idempotência** por `Idempotency-Key`.
+- **Liquidação/fechamento** por terminal, com bruto, estorno e líquido.
+- **Idempotência** por `Idempotency-Key`, inclusive sob concorrência.
 - **Timeout + retry** sem duplicar transação.
 - **Fila offline** em SQLite e sincronização.
 - **Reinício do terminal** preservando a fila.
 - **Contratos de erro** (400/422/409) e `correlation_id` em API, banco e evento.
-- **ISO 8583**: MTI, bitmap primário/secundário, campos fixos e LLVAR, campo 39 e 70.
+- **ISO 8583**: MTI, bitmap, campos fixos/LLVAR, `0100/0110`, `0400/0410` e `0800/0810`.
 - **Android**: login, validação, carrinho, background/foreground e atualização de APK.
 
 ## Arquitetura
@@ -48,11 +50,12 @@ flowchart LR
     R[Robot Framework] --> A[PaymentApi.py]
     R --> T[Terminal.py]
     R --> I[Iso8583.py]
+    R --> IA[Iso8583Acquirer.py]
     R --> D[Database.py]
     T --> API[FastAPI - simulado]
     A --> API
     API --> DB[(SQLite)]
-    R --> ISO[iso8583_lab]
+    IA --> ISO[iso8583_lab]
     R --> DEV[AppiumLibrary]
     DEV --> APP[Sauce Labs My Demo App]
 ```
@@ -60,7 +63,7 @@ flowchart LR
 - `src/api`: API FastAPI, regras de pagamento, idempotência, eventos e refunds.
 - `src/terminal`: simulador de terminal com fila offline persistida em SQLite.
 - `libraries`: bibliotecas Robot que isolam HTTP, banco, estado e parsing.
-- `robot/suites`: suítes de negócio, resiliência, contratos e ISO 8583.
+- `robot/suites`: 32 casos de negócio, resiliência, captura/liquidação, concorrência e ISO 8583.
 - `robot/device`: smoke de dispositivo no app público.
 - `iso8583_lab`: parser/construtor limitado a ASCII e dados sintéticos.
 
@@ -138,9 +141,9 @@ pos-qa-lab/
   src/terminal/         # simulador com fila offline
   iso8583_lab/          # parser/construtor didático
   libraries/            # bibliotecas Robot
-  robot/suites/         # 13 casos de núcleo + 5 de ISO
+  robot/suites/         # 32 casos de núcleo, captura/liquidação, concorrência e ISO
   robot/device/         # 5 casos de dispositivo
-  tests/                # 25 testes unitários
+  tests/                # 39 testes unitários
   scripts/              # runner, resumo, download e upgrade
 ```
 

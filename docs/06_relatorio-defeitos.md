@@ -18,10 +18,12 @@
 | FIND-LAB-003 | Nome de keyword ambíguo em três libraries | Baixa | Corrigido |
 | FIND-LAB-005 | Activity relativa e falta de `udid` impediam a sessão Appium | Baixa | Corrigido |
 | FIND-LAB-006 | CT-DEV-04 usava container não clicável e o botão errado para abrir o carrinho | Baixa | Corrigido |
+| FIND-LAB-007 | `Reset Acquirer` não era exposto porque o método se chamava `reset` | Baixa | Corrigido |
+| FIND-LAB-008 | `Acquirer` não tinha `transaction_count` para o teste de duplicidade | Baixa | Corrigido |
 
 - Defeitos de produto/mock: **1** (DEF-LAB-002).
 - Defeitos de infraestrutura de teste: **2** (DEF-LAB-001 e DEF-LAB-004).
-- Achados de automação: **3** (FIND-LAB-003, FIND-LAB-005 e FIND-LAB-006).
+- Achados de automação/implementação: **5** (FIND-LAB-003, 005, 006, 007 e 008).
 
 ## DEF-LAB-001 — Runner bloqueava a API
 
@@ -46,7 +48,7 @@ bloqueado ao tentar escrever log.
 
 **Correção:** redirecionar `stdout`/`stderr` para `reports/robot/api.log` e fechar o arquivo no `finally`.
 
-**Reteste:** 18/18 casos aprovados; `api.log` com as requisições e `correlation_id`.
+**Reteste:** 18/18 na versão 0.1.0; `api.log` com as requisições e `correlation_id`.
 
 ## DEF-LAB-002 — Sync aceitava transação de outro terminal
 
@@ -93,7 +95,7 @@ barra, no Linux não, gerando `/tmpterminal_<key>.db` e falha ao abrir o banco.
 
 **Correção:** usar `Join Path    ${TEMPDIR}    terminal_${key}.db`.
 
-**Reteste:** 18/18 no Windows e reexecução do CI no Linux.
+**Reteste:** 18/18 na versão 0.1.0 no Windows e reexecução do CI no Linux.
 
 ## FIND-LAB-003 — Keyword `Get Payment` ambígua
 
@@ -109,7 +111,7 @@ barra, no Linux não, gerando `/tmpterminal_<key>.db` e falha ao abrir o banco.
 **Correção:** chamadas qualificadas (`Database.Get Payment`, `Database.Get Refunds`,
 `Database.Get Events`) e keyword de negócio `Get Payment Row`.
 
-**Reteste:** 18/18 aprovados.
+**Reteste:** 18/18 na versão 0.1.0.
 
 ## FIND-LAB-005 — Sessão Appium não abria o app
 
@@ -145,6 +147,37 @@ barra, no Linux não, gerando `/tmpterminal_<key>.db` e falha ao abrir o banco.
 `totalPriceTV`.
 
 **Reteste:** CT-DEV-04 passou isolado e na suíte completa 5/5.
+
+## FIND-LAB-007 — `Reset Acquirer` não existia
+
+| Campo | Conteúdo |
+|---|---|
+| Severidade | Baixa |
+| Status | Corrigido |
+| Tipo | Nome de keyword |
+| Evidência | 6 casos da suíte ISO Flow falharam no setup |
+
+**Sintoma:** Robot não encontrava `Reset Acquirer`; o método Python se chamava `reset`, gerando a
+keyword genérica `Reset`, que não foi resolvida no contexto.
+
+**Correção:** renomear o método para `reset_acquirer`.
+
+**Reteste:** 6/6 casos da suíte ISO Flow aprovados.
+
+## FIND-LAB-008 — `Acquirer` sem `transaction_count`
+
+| Campo | Conteúdo |
+|---|---|
+| Severidade | Baixa |
+| Status | Corrigido |
+| Tipo | Lacuna de implementação detectada por teste unitário |
+| Evidência | `tests/test_iso8583_acquirer.py::test_duplicate_authorization_is_idempotent` |
+
+**Sintoma:** o teste de duplicidade não conseguia confirmar que apenas uma transação foi criada.
+
+**Correção:** adicionar `Acquirer.transaction_count()` e expor `Transaction Count` na library Robot.
+
+**Reteste:** teste unitário e CT-ISO-08 aprovados.
 
 ## Lições
 

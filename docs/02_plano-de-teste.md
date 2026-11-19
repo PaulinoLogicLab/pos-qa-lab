@@ -1,17 +1,18 @@
 # 02 — Plano de teste
 
 **Projeto:** POS QA Lab
-**Versão:** 0.1.0
+**Versão:** 0.2.0
 **Data:** 19/11/2026
 
 ## 1. Estratégia
 
 Teste baseado em risco, com foco nas falhas que mais impactam uma jornada de pagamento:
 
-1. **Transação financeira**: venda, recusa, cancelamento, estorno e parcelamento.
-2. **Resiliência**: timeout, retry, idempotência, offline, sincronização e reinício.
+1. **Transação financeira**: venda, recusa, cancelamento, estorno, parcelamento, pré-autorização,
+   captura e liquidação.
+2. **Resiliência**: timeout, retry, idempotência, concorrência, offline, sincronização e reinício.
 3. **Contrato e observabilidade**: validação de entrada, códigos de erro, `correlation_id` e eventos.
-4. **Formato**: parsing ISO 8583 com dados sintéticos.
+4. **Formato**: parsing e fluxo ISO 8583 com dados sintéticos.
 5. **Dispositivo**: instalação, atualização, login e navegação no app público.
 
 ## 2. Níveis e tipos
@@ -22,7 +23,7 @@ Teste baseado em risco, com foco nas falhas que mais impactam uma jornada de pag
 | Integração | Robot + API + SQLite | jornada completa via HTTP e banco |
 | Contrato | Robot | payloads inválidos, headers, códigos de erro |
 | Dispositivo | Robot + AppiumLibrary | app público Android |
-| Regressão | Robot tags | `smoke`, `regression`, `resilience`, `contract`, `iso8583` |
+| Regressão | Robot tags | `smoke`, `regression`, `settlement`, `concurrency`, `contract`, `iso8583` |
 
 ## 3. Ambiente
 
@@ -55,6 +56,7 @@ Teste baseado em risco, com foco nas falhas que mais impactam uma jornada de pag
 ## 6. Critérios de saída
 
 - 100% dos casos do núcleo e ISO executados.
+- 32/32 casos de núcleo/ISO aprovados.
 - Nenhuma falha aberta no núcleo.
 - Relatório e resumo gerados.
 - Defeitos encontrados com evidência e status.
@@ -97,9 +99,9 @@ caso são registrados como lacuna.
 | 1 | Escopo, riscos, plano e estrutura |
 | 2 | API, banco e Docker/local |
 | 3 | Terminal simulator e testes unitários |
-| 4 | Suítes de venda, cancelamento e estorno |
-| 5 | Resiliência, contratos e observabilidade |
-| 6 | ISO 8583 |
+| 4 | Suítes de venda, cancelamento, estorno, captura e liquidação |
+| 5 | Resiliência, concorrência, contratos e observabilidade |
+| 6 | ISO 8583: parser e fluxo de mensagens |
 | 7 | Device suite e script de upgrade |
 | 8 | Relatórios, matriz, limitações e README |
 

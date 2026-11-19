@@ -28,6 +28,9 @@ CREATE TABLE IF NOT EXISTS payments (
     response_code TEXT NOT NULL,
     http_status INTEGER NOT NULL,
     refunded_cents INTEGER NOT NULL DEFAULT 0,
+    captured_cents INTEGER NOT NULL DEFAULT 0,
+    settlement_id TEXT,
+    settled_at TEXT,
     correlation_id TEXT NOT NULL,
     created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL
@@ -53,7 +56,38 @@ CREATE TABLE IF NOT EXISTS refunds (
     created_at TEXT NOT NULL,
     FOREIGN KEY (payment_id) REFERENCES payments(id)
 );
+
+CREATE TABLE IF NOT EXISTS settlements (
+    id TEXT PRIMARY KEY,
+    terminal_id TEXT NOT NULL,
+    idempotency_key TEXT NOT NULL UNIQUE,
+    gross_cents INTEGER NOT NULL,
+    refunded_cents INTEGER NOT NULL,
+    net_cents INTEGER NOT NULL,
+    transaction_count INTEGER NOT NULL,
+    status TEXT NOT NULL,
+    correlation_id TEXT NOT NULL,
+    created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS settlement_items (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    settlement_id TEXT NOT NULL,
+    payment_id TEXT NOT NULL UNIQUE,
+    gross_cents INTEGER NOT NULL,
+    refunded_cents INTEGER NOT NULL,
+    net_cents INTEGER NOT NULL,
+    created_at TEXT NOT NULL,
+    FOREIGN KEY (settlement_id) REFERENCES settlements(id),
+    FOREIGN KEY (payment_id) REFERENCES payments(id)
+);
 """
+
+PAYMENT_COLUMNS = {
+    "captured_cents": "INTEGER NOT NULL DEFAULT 0",
+    "settlement_id": "TEXT",
+    "settled_at": "TEXT",
+}
 
 
 def db_path(path: str | Path | None = None) -> Path:
@@ -68,12 +102,27 @@ def connect(path: str | Path | None = None) -> sqlite3.Connection:
     conn = sqlite3.connect(target, timeout=15)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
+    conn.execute("PRAGMA journal_mode = WAL")
+    conn.execute("PRAGMA busy_timeout = 5000")
     return conn
 
 
 def init_db(path: str | Path | None = None) -> None:
     with connect(path) as conn:
         conn.executescript(SCHEMA)
+        existing = {row["name"] for row in conn.execute("PRAGMA table_info(payments)")}
+        for name, definition in PAYMENT_COLUMNS.items():
+            if name not in existing:
+                conn.execute(f"ALTER TABLE payments ADD COLUMN {name} {definition}")
+        # Backfill rows created before the capture/settlement columns existed.
+        conn.execute(
+            """
+            UPDATE payments
+               SET captured_cents = amount_cents
+             WHERE captured_cents = 0
+               AND status IN ('CAPTURED', 'PARTIALLY_REFUNDED', 'REFUNDED')
+            """
+        )
 
 
 def utc_now() -> str:

@@ -18,6 +18,8 @@ FIELD_SPECS: dict[int, tuple[str, int, str]] = {
     11: ("n", 6, "FIXED"),
     12: ("n", 6, "FIXED"),
     13: ("n", 4, "FIXED"),
+    37: ("an", 12, "FIXED"),
+    38: ("an", 6, "FIXED"),
     39: ("an", 2, "FIXED"),
     41: ("an", 8, "FIXED"),
     42: ("an", 15, "FIXED"),

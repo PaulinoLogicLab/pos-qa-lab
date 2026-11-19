@@ -8,37 +8,39 @@
 **Comando (núcleo/ISO):** `python scripts/run_suite.py --exclude device`
 **Comando (device):** `RUN_DEVICE_TESTS=1 python scripts/run_suite.py --device --no-api --outputdir reports/device_run`
 
-**CI:** GitHub Actions `robot-core` em Ubuntu + Python 3.12, execução 18/18 aprovada em 19/11/2026
-(run `44536411506`).
+**CI:** GitHub Actions `robot-core` em Ubuntu + Python 3.12, execução 32/32 aprovada em 19/11/2026.
 
 ## 1. Resumo
 
 | Métrica | Valor |
 |---|---:|
-| Casos Robot executados | 23 |
-| Aprovados | 23 |
+| Casos Robot executados | 37 |
+| Aprovados | 37 |
 | Reprovados | 0 |
 | Ignorados | 0 |
-| Tempo | 0,64 s (núcleo/ISO) + 104,69 s (device) |
-| Testes unitários Python | 25 aprovados |
-| Suítes | 6 (5 de núcleo/ISO + 1 de device) |
+| Tempo | 4,01 s (núcleo/ISO) + 104,69 s (device) |
+| Testes unitários Python | 39 aprovados |
+| Suítes | 9 (8 de núcleo/ISO + 1 de device) |
 | Casos de dispositivo | 5/5 aprovados em emulador |
 
 ## 2. Resultado por suíte
 
 | Suíte | Casos | Aprovados | Reprovados | Tempo |
 |---|---:|---:|---:|---:|
-| 01 Sales | 3 | 3 | 0 | 0,084 s |
-| 02 Cancellation Refund | 3 | 3 | 0 | 0,220 s |
-| 03 Resilience | 4 | 4 | 0 | 0,183 s |
-| 04 Contracts Observability | 3 | 3 | 0 | 0,133 s |
-| 06 ISO 8583 Lab | 5 | 5 | 0 | 0,016 s |
-| 05 Device Smoke (emulador) | 5 | 5 | 0 | 104,689 s |
+| 01 Sales | 3 | 3 | 0 | 0,102 s |
+| 02 Cancellation Refund | 3 | 3 | 0 | 0,286 s |
+| 03 Resilience | 4 | 4 | 0 | 0,208 s |
+| 04 Contracts Observability | 3 | 3 | 0 | 0,129 s |
+| 05 Capture Settlement | 6 | 6 | 0 | 0,613 s |
+| 06 ISO 8583 Lab | 5 | 5 | 0 | 0,015 s |
+| 07 Concurrency Faults | 2 | 2 | 0 | 2,633 s |
+| 08 ISO 8583 Flow | 6 | 6 | 0 | 0,020 s |
+| Device 05 Device Smoke (emulador) | 5 | 5 | 0 | 104,689 s |
 
 ## 3. Cobertura de estados
 
-Estados exercitados: `CAPTURED`, `DECLINED`, `AUTHORIZED`, `CANCELLED`, `PARTIALLY_REFUNDED`,
-`REFUNDED` e `FAILED`.
+Estados exercitados: `CAPTURED`, `DECLINED`, `AUTHORIZED`, `CANCELLED`, `PARTIALLY_CAPTURED`,
+`PARTIALLY_REFUNDED`, `REFUNDED` e `FAILED`.
 
 Transições exercitadas:
 
@@ -46,15 +48,19 @@ Transições exercitadas:
 - criação → negado;
 - criação → autorizado;
 - autorizado → cancelado;
+- autorizado → capturado;
+- autorizado → parcialmente capturado;
+- parcialmente capturado → estornado;
 - capturado → parcialmente estornado;
 - parcialmente estornado → estornado;
 - criação → falha por timeout;
-- tentativas inválidas: estorno de autorizada, cancelamento de capturada.
+- tentativas inválidas: estorno de autorizada, cancelamento de capturada, captura após cancelamento;
+- liquidação: bruto, estorno, líquido e lote vazio.
 
 ## 4. Testes unitários
 
-`pytest`: **25 aprovados**. Cobrem a API (contratos, idempotência, transições, timeout, correlação e sync),
-o parser ISO 8583 e a fila offline do terminal.
+`pytest`: **39 aprovados**. Cobrem a API (contratos, idempotência, transições, timeout, concorrência,
+captura, liquidação, correlação e sync), o parser/fluxo ISO 8583 e a fila offline do terminal.
 
 ## 5. Dispositivo
 
@@ -80,6 +86,8 @@ O script `scripts/device_upgrade_check.py` implementa a evidência de instalaç�
 | FIND-LAB-003 | Nome `Get Payment` ambíguo em três libraries Robot | Baixa | Corrigido |
 | FIND-LAB-005 | Activity relativa não abria o app no Appium; faltava `udid` e nome completo | Baixa | Corrigido |
 | FIND-LAB-006 | CT-DEV-04 clicava no container não clicável e no botão de adicionar, não no ícone do carrinho | Baixa | Corrigido |
+| FIND-LAB-007 | Keyword `Reset Acquirer` não existia porque o método se chamava `reset` | Baixa | Corrigido |
+| FIND-LAB-008 | `Acquirer` não expunha `transaction_count`; teste unitário detectou | Baixa | Corrigido |
 
 Detalhes no [relatório de defeitos](06_relatorio-defeitos.md).
 
@@ -100,8 +108,9 @@ Detalhes no [relatório de defeitos](06_relatorio-defeitos.md).
 
 ## 8. Observações e limites
 
-- Os 0,64 s são a soma dos casos de núcleo/ISO; o device suite levou 104,69 s.
+- Os 4,01 s são a soma dos casos de núcleo/ISO; o device suite levou 104,69 s.
+- A concorrência usa 10 threads e uma barreira; o timeout usa atraso de 1,5 s e cliente de 0,5 s.
 - A API é local e simulada; não há latência de rede real.
 - O ISO 8583 é um laboratório de formato, não uma implementação de produção.
-- A primeira execução do núcleo teve 9 falhas causadas por `DEF-LAB-001`; após a correção, 18/18 passaram.
+- A primeira execução do núcleo teve 9 falhas causadas por `DEF-LAB-001`; após a correção, 18/18 passaram (v0.1.0).
 - O device suite foi executado em emulador, não em dispositivo físico/POS.

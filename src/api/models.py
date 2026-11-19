@@ -18,6 +18,11 @@ class PaymentRequest(BaseModel):
     merchant_id: str = Field(min_length=1, max_length=32)
     card_token: str = Field(default="tok_approved", min_length=1, max_length=64)
     capture: bool = True
+    simulate_delay_ms: int = Field(default=0, ge=0, le=5000)
+
+
+class CaptureRequest(BaseModel):
+    amount: Decimal | None = Field(default=None, gt=0, max_digits=12, decimal_places=2)
 
 
 class RefundRequest(BaseModel):

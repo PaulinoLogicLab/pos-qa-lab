@@ -48,3 +48,26 @@ Create Authorized Payment
     ...    capture=${FALSE}
     ...    idempotency_key=${key}
     RETURN    ${resp}
+
+Capture Authorized Payment
+    [Arguments]    ${payment_id}    ${amount}=${EMPTY}
+    IF    '${amount}' == ''
+        ${resp}=    PaymentApi.Capture Payment    ${payment_id}
+    ELSE
+        ${resp}=    PaymentApi.Capture Payment    ${payment_id}    ${amount}
+    END
+    RETURN    ${resp}
+
+Settle Terminal Batch
+    [Arguments]    ${terminal_id}    ${idempotency_key}=${EMPTY}
+    ${key}=    Resolve Idempotency Key    ${idempotency_key}
+    ${resp}=    PaymentApi.Settle Terminal    ${terminal_id}    ${key}
+    RETURN    ${resp}
+
+Assert Captured Amount
+    [Arguments]    ${resp}    ${expected}
+    Should Be Equal As Strings    ${resp}[body][captured_amount]    ${expected}
+
+Assert Settlement Net
+    [Arguments]    ${resp}    ${expected}
+    Should Be Equal As Strings    ${resp}[body][net_amount]    ${expected}

@@ -58,3 +58,27 @@ class Database:
                 (payment_id,),
             ).fetchall()
             return [dict(row) for row in rows]
+
+    def get_settlement(self, settlement_id: str):
+        with self._connect() as conn:
+            row = conn.execute(
+                "SELECT * FROM settlements WHERE id = ?", (settlement_id,)
+            ).fetchone()
+            return dict(row) if row else None
+
+    def get_settlement_items(self, settlement_id: str):
+        with self._connect() as conn:
+            rows = conn.execute(
+                "SELECT payment_id, gross_cents, refunded_cents, net_cents "
+                "FROM settlement_items WHERE settlement_id = ? ORDER BY id",
+                (settlement_id,),
+            ).fetchall()
+            return [dict(row) for row in rows]
+
+    def count_settlements_by_idempotency(self, idempotency_key: str) -> int:
+        with self._connect() as conn:
+            row = conn.execute(
+                "SELECT COUNT(*) AS total FROM settlements WHERE idempotency_key = ?",
+                (idempotency_key,),
+            ).fetchone()
+            return int(row["total"])
