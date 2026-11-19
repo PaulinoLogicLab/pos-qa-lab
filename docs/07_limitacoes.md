@@ -13,6 +13,10 @@ Este documento existe para evitar que o laboratório seja lido como algo que ele
 - **Pagamento:** tokens (`tok_approved`, `tok_declined`, `tok_timeout`) substituem um gateway real.
 - **ISO 8583:** parser/construtor didático em ASCII, com um subconjunto de campos. Não há BCD, MAC,
   rede, TLS ou certificação.
+- **Captura/liquidação:** pré-autorização, captura parcial e fechamento são simulados em SQLite; não há
+  clearing, settlement real ou conciliação com adquirente.
+- **Concorrência/timeout:** a injeção de falhas usa atraso no servidor e cliente com timeout; não é uma
+  rede instável real.
 
 ## 2. O que não foi testado
 
@@ -23,6 +27,9 @@ Este documento existe para evitar que o laboratório seja lido como algo que ele
 - Carga, estabilidade prolongada, segurança ofensiva e acessibilidade.
 - A suíte de dispositivo foi executada em **emulador Android**, não em dispositivo físico ou POS real.
 - O script de atualização de APK está implementado, mas ainda não foi executado.
+- Liquidação real, clearing, certificação de bandeira e conciliação com adquirente.
+- A liquidação é um snapshot: um estorno feito depois do fechamento não recalcula o lote.
+- A captura parcial não libera automaticamente o saldo restante da autorização.
 
 ## 3. O que o device suite cobre
 
@@ -42,10 +49,11 @@ simulador de terminal e na experiência profissional da autora, não neste repos
 
 - MTI;
 - bitmap primário e secundário;
-- campos 2, 3, 4, 7, 11, 12, 13, 39, 41, 42, 49 e 70;
-- mensagens sintéticas e PAN mascarado.
+- campos 2, 3, 4, 7, 11, 12, 13, 37, 38, 39, 41, 42, 49 e 70;
+- mensagens sintéticas e PAN mascarado;
+- fluxo `0100/0110`, `0400/0410` e `0800/0810` em memória.
 
-**Não cobre:** BCD, MAC, PIN block, TLS, conexão com adquirente, certificação ou mensagens reais.
+**Não cobre:** BCD, MAC, PIN block, TLS, socket, conexão com adquirente, certificação ou mensagens reais.
 
 ## 5. O que não pode ser afirmado
 

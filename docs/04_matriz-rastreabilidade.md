@@ -22,6 +22,11 @@
 | RF-13 | Login e validação no app público | CT-DEV-01, CT-DEV-02, CT-DEV-03 | suíte executada em emulador | Coberto |
 | RF-14 | Carrinho no app público | CT-DEV-04 | suíte executada em emulador | Coberto |
 | RF-15 | Ciclo de vida do app (background/foreground) | CT-DEV-05 | suíte executada em emulador | Coberto |
+| RF-16 | Pré-autorização e captura total/parcial | CT-CAP-01, CT-CAP-02, CT-CAP-03 | `captured_cents`, status e eventos | Coberto |
+| RF-17 | Liquidação por terminal com bruto, estorno e líquido | CT-SET-01, CT-SET-02, CT-SET-03 | `settlements`, `settlement_items`, `settlement_id` | Coberto |
+| RF-18 | Concorrência de idempotência | CT-RES-05 | 10 threads, um `payment_id` | Coberto |
+| RF-19 | Latência/timeout e retry | CT-RES-06 | `simulate_delay_ms`, timeout e retry | Coberto |
+| RF-20 | Fluxo ISO 8583 de autorização, reversão e rede | CT-ISO-06 a CT-ISO-11 | `iso8583_lab/acquirer.py` | Coberto |
 
 ## 2. Requisitos não funcionais
 
@@ -37,17 +42,19 @@
 
 | Métrica | Valor |
 |---|---:|
-| Requisitos funcionais | 15 |
+| Requisitos funcionais | 20 |
 | Requisitos não funcionais | 5 |
-| Casos executados | 23 |
+| Casos de núcleo/ISO executados | 32 |
 | Casos de dispositivo executados | 5 |
-| Casos executados com requisito mapeado | 23/23 |
+| Casos executados com requisito mapeado | 37/37 |
 | Casos de dispositivo com requisito mapeado | 5/5 |
 
 ## 4. Lacunas declaradas
 
 - O device suite foi executado em emulador, não em dispositivo físico/POS.
 - O script de atualização de APK está implementado, mas ainda não executado.
+- O fluxo ISO 8583 é em memória, sem socket, BCD, MAC ou rede real.
+- A liquidação é um snapshot; estorno posterior não recalcula o lote.
+- A captura parcial não libera o saldo restante da autorização.
 - Não há requisito de impressão térmica, pinpad, EMV, PCI PTS ou certificação de bandeira.
-- O ISO 8583 cobre apenas ASCII e um subconjunto de campos; BCD, MAC e rede não estão implementados.
 - Não há teste de carga, segurança ofensiva ou acessibilidade nesta versão.

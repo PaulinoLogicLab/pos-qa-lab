@@ -3,7 +3,9 @@
 ## Núcleo + ISO 8583
 
 - **Comando:** `python scripts/run_suite.py --exclude device`
-- **Resultado:** 18/18 aprovados, 0 falhas, 0,64 s
+- **Resultado:** 32/32 aprovados, 0 falhas, 4,01 s
+- **Cobertura:** venda, cancelamento/estorno, captura, liquidação, resiliência, concorrência,
+  contratos, ISO 8583 (parser e fluxo).
 - **Resumo:** [core-2026-11-19/summary.json](core-2026-11-19/summary.json)
 - **Relatórios completos:** gerados localmente em `reports/robot/` e publicados como artifact no
   GitHub Actions (`robot-core`).
