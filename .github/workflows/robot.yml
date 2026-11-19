@@ -23,8 +23,8 @@ jobs:
         run: pip install -r requirements.txt
       - name: Lint
         run: ruff check .
-      - name: Unit tests
-        run: python -m pytest
+      - name: Unit tests and coverage
+        run: python -m pytest --cov=src --cov=iso8583_lab --cov-report=term --cov-fail-under=85
       - name: Robot core and ISO lab
         run: python scripts/run_suite.py --exclude device
       - name: Robot parallel with Pabot
@@ -56,6 +56,8 @@ jobs:
         run: mkdir -p reports && chmod 777 reports
       - name: Run tests in Compose
         run: docker compose up --abort-on-container-exit --exit-code-from tests tests
+      - name: Performance smoke (k6)
+        run: docker compose up -d api && docker compose --profile perf run --rm k6
       - name: Compose down
         if: always()
         run: docker compose down -v

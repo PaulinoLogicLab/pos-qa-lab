@@ -35,3 +35,61 @@ class SyncTransaction(PaymentRequest):
 
 class SyncRequest(BaseModel):
     transactions: list[SyncTransaction] = Field(min_length=1, max_length=50)
+
+
+class InstallmentPlanItem(BaseModel):
+    number: int
+    amount: str
+
+
+class PaymentResponse(BaseModel):
+    payment_id: str
+    status: str
+    response_code: str
+    amount: str
+    captured_amount: str
+    refunded_amount: str
+    currency: str
+    method: str
+    installments: int
+    installment_plan: list[InstallmentPlanItem]
+    entry_mode: str
+    terminal_id: str
+    merchant_id: str
+    capture_requested: bool
+    settlement_id: str | None = None
+    settled_at: str | None = None
+    correlation_id: str
+    created_at: str
+    updated_at: str
+
+
+class SettlementItem(BaseModel):
+    payment_id: str
+    gross_amount: str
+    refunded_amount: str
+    net_amount: str
+
+
+class SettlementResponse(BaseModel):
+    settlement_id: str
+    terminal_id: str
+    status: str
+    transaction_count: int
+    gross_amount: str
+    refunded_amount: str
+    net_amount: str
+    correlation_id: str
+    created_at: str
+    items: list[SettlementItem]
+
+
+class ErrorDetail(BaseModel):
+    code: str
+    message: str
+    correlation_id: str | None = None
+
+
+class ErrorResponse(BaseModel):
+    error: ErrorDetail
+

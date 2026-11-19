@@ -13,7 +13,15 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
 from .db import init_db
-from .models import CaptureRequest, PaymentRequest, RefundRequest, SyncRequest
+from .models import (
+    CaptureRequest,
+    ErrorResponse,
+    PaymentRequest,
+    PaymentResponse,
+    RefundRequest,
+    SettlementResponse,
+    SyncRequest,
+)
 from .service import (
     ServiceError,
     cancel_payment,
@@ -36,7 +44,7 @@ if not logger.handlers:
 
 app = FastAPI(
     title="POS QA Lab - Simulated Payment API",
-    version="0.5.0",
+    version="0.6.0",
     description=(
         "API de laboratorio para jornadas de pagamento. Nao e um adquirente real, "
         "nao implementa EMV, ISO 8583 de producao ou PCI PTS."
@@ -97,7 +105,15 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
-@app.post("/api/v1/payments")
+@app.post(
+    "/api/v1/payments",
+    responses={
+        201: {"model": PaymentResponse},
+        422: {"model": ErrorResponse},
+        503: {"model": ErrorResponse},
+        504: {"model": ErrorResponse},
+    },
+)
 def create(
     payload: PaymentRequest,
     request: Request,
@@ -123,7 +139,7 @@ def create(
     return JSONResponse(status_code=status_code, content=body)
 
 
-@app.get("/api/v1/payments/{payment_id}")
+@app.get("/api/v1/payments/{payment_id}", response_model=PaymentResponse)
 def read(payment_id: str, request: Request):
     cid = correlation(request)
     try:
@@ -132,7 +148,7 @@ def read(payment_id: str, request: Request):
         return error_response(exc, cid)
 
 
-@app.post("/api/v1/payments/{payment_id}/cancel")
+@app.post("/api/v1/payments/{payment_id}/cancel", response_model=PaymentResponse)
 def cancel(payment_id: str, request: Request):
     cid = correlation(request)
     try:
@@ -144,7 +160,7 @@ def cancel(payment_id: str, request: Request):
     return body
 
 
-@app.post("/api/v1/payments/{payment_id}/refund")
+@app.post("/api/v1/payments/{payment_id}/refund", response_model=PaymentResponse)
 def refund(payment_id: str, request: Request, payload: RefundRequest | None = None):
     cid = correlation(request)
     try:
@@ -162,7 +178,7 @@ def refund(payment_id: str, request: Request, payload: RefundRequest | None = No
     return body
 
 
-@app.post("/api/v1/payments/{payment_id}/capture")
+@app.post("/api/v1/payments/{payment_id}/capture", response_model=PaymentResponse)
 def capture(payment_id: str, request: Request, payload: CaptureRequest | None = None):
     cid = correlation(request)
     try:
@@ -180,7 +196,11 @@ def capture(payment_id: str, request: Request, payload: CaptureRequest | None = 
     return body
 
 
-@app.post("/api/v1/terminals/{terminal_id}/settlement")
+@app.post(
+    "/api/v1/terminals/{terminal_id}/settlement",
+    response_model=SettlementResponse,
+    responses={409: {"model": ErrorResponse}},
+)
 def settlement(
     terminal_id: str,
     request: Request,
@@ -205,7 +225,7 @@ def settlement(
     return JSONResponse(status_code=201, content=body)
 
 
-@app.get("/api/v1/settlements/{settlement_id}")
+@app.get("/api/v1/settlements/{settlement_id}", response_model=SettlementResponse)
 def read_settlement(settlement_id: str, request: Request):
     cid = correlation(request)
     try:

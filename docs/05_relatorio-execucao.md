@@ -9,7 +9,7 @@
 **Comando (device):** `RUN_DEVICE_TESTS=1 python scripts/run_suite.py --device --no-api --outputdir reports/device_run`
 
 **CI:** GitHub Actions `robot-core` em Ubuntu + Python 3.11/3.12/3.13, execução 44/44 aprovada em
-19/11/2026; Pabot 44/44 na versão 3.12; job Docker separado.
+19/11/2026; Pabot 44/44 na versão 3.12; job Docker com Compose e k6.
 
 ## 1. Resumo
 
@@ -19,10 +19,12 @@
 | Aprovados | 49 |
 | Reprovados | 0 |
 | Ignorados | 0 |
-| Tempo | 3,89 s (núcleo/ISO/hardware) + 104,69 s (device) |
+| Tempo | 4,08 s (núcleo/ISO/hardware) + 104,69 s (device) |
 | Execução paralela | 44/44 em 4 processos Pabot |
 | Docker Compose | 44/44 no container Linux |
-| Testes unitários Python | 45 aprovados |
+| Testes unitários Python | 52 aprovados |
+| Cobertura de linhas | 88,9% |
+| k6 | 436 requisições, 0% falha, p95 77,50 ms |
 | Suítes | 11 (10 de núcleo/ISO/hardware + 1 de device) |
 | Casos de dispositivo | 5/5 aprovados em emulador |
 
@@ -30,16 +32,16 @@
 
 | Suíte | Casos | Aprovados | Reprovados | Tempo |
 |---|---:|---:|---:|---:|
-| 01 Sales | 3 | 3 | 0 | 0,077 s |
-| 02 Cancellation Refund | 3 | 3 | 0 | 0,123 s |
-| 03 Resilience | 4 | 4 | 0 | 0,176 s |
-| 04 Contracts Observability | 3 | 3 | 0 | 0,081 s |
-| 05 Capture Settlement | 6 | 6 | 0 | 0,279 s |
-| 06 ISO 8583 Lab | 5 | 5 | 0 | 0,061 s |
-| 07 Concurrency Faults | 2 | 2 | 0 | 2,647 s |
-| 08 ISO 8583 Flow | 6 | 6 | 0 | 0,115 s |
-| 09 Data Driven Sales | 5 | 5 | 0 | 0,077 s |
-| 10 Hardware Peripherals | 7 | 7 | 0 | 0,258 s |
+| 01 Sales | 3 | 3 | 0 | 0,095 s |
+| 02 Cancellation Refund | 3 | 3 | 0 | 0,194 s |
+| 03 Resilience | 4 | 4 | 0 | 0,213 s |
+| 04 Contracts Observability | 3 | 3 | 0 | 0,080 s |
+| 05 Capture Settlement | 6 | 6 | 0 | 0,579 s |
+| 06 ISO 8583 Lab | 5 | 5 | 0 | 0,021 s |
+| 07 Concurrency Faults | 2 | 2 | 0 | 2,574 s |
+| 08 ISO 8583 Flow | 6 | 6 | 0 | 0,027 s |
+| 09 Data Driven Sales | 5 | 5 | 0 | 0,100 s |
+| 10 Hardware Peripherals | 7 | 7 | 0 | 0,192 s |
 | Device 05 Device Smoke (emulador) | 5 | 5 | 0 | 104,689 s |
 
 ### 2.1 Execução paralela com Pabot
@@ -48,8 +50,8 @@
 |---|---:|
 | Processos | 4 |
 | Casos | 44/44 |
-| Soma dos casos | 4,13 s |
-| Tempo de parede | 8,00 s |
+| Soma dos casos | 3,97 s |
+| Tempo de parede | 7,40 s |
 | Evidência | `reports/pabot/report.html` e `reports/pabot/summary.json` |
 
 ### 2.2 Docker Compose
@@ -61,6 +63,25 @@
 | Resultado | containers encerrados com código 0 |
 | Profile `parallel` | 44/44 em 4 processos |
 | Evidência | `reports/robot/report.html` montado do container |
+
+### 2.3 Contrato, propriedades e cobertura
+
+| Item | Resultado |
+|---|---:|
+| Contrato OpenAPI | 4/4 |
+| Property-based (Hypothesis) | 3/3 |
+| Cobertura total | 88,9% |
+| Gate de cobertura | 85% |
+
+### 2.4 Performance — k6
+
+| Métrica | Valor |
+|---|---:|
+| Requisições | 436 |
+| Checks | 872/872 |
+| Falha HTTP | 0,00% |
+| p95 | 77,50 ms |
+| Threshold | p95 < 500 ms e falha < 1% |
 
 ## 3. Cobertura de estados
 
@@ -84,9 +105,9 @@ Transições exercitadas:
 
 ## 4. Testes unitários
 
-`pytest`: **45 aprovados**. Cobrem a API (contratos, idempotência, transições, timeout, concorrência,
-captura, liquidação, correlação e sync), o parser/fluxo ISO 8583, a fila offline e os periféricos
-simulados.
+`pytest`: **52 aprovados**. Cobrem a API (contratos, idempotência, transições, timeout, concorrência,
+captura, liquidação, correlação e sync), o parser/fluxo ISO 8583, a fila offline, os periféricos
+simulados, o contrato OpenAPI e propriedades de parcelamento/ISO.
 
 ## 5. Dispositivo
 
@@ -135,6 +156,7 @@ Detalhes no [relatório de defeitos](06_relatorio-defeitos.md).
 - `reports/pabot/output.xml`
 - `reports/pabot/summary.json`
 - `reports/pabot/evidence/events-*.jsonl`
+- `reports/k6-summary.json`
 - `reports/device_run/report.html`
 - `reports/device_run/log.html`
 - `reports/device_run/output.xml`
@@ -142,12 +164,14 @@ Detalhes no [relatório de defeitos](06_relatorio-defeitos.md).
 - `docs/evidencias/device-2026-11-19/summary.json`
 - `docs/evidencias/core-2026-11-19/summary.json`
 - `docs/evidencias/pabot-2026-11-19/summary.json`
+- `docs/evidencias/k6-2026-11-19/summary.json`
 - `reports/logcat/` (quando houver falha de device)
 
 ## 8. Observações e limites
 
-- Os 3,89 s são a soma dos casos de núcleo/ISO/hardware; o device suite levou 104,69 s.
-- O Pabot executa os mesmos 44 casos em 4 processos; o tempo de parede foi 8,00 s.
+- Os 4,08 s são a soma dos casos de núcleo/ISO/hardware; o device suite levou 104,69 s.
+- O Pabot executa os mesmos 44 casos em 4 processos; o tempo de parede foi 7,40 s.
+- O k6 fez 436 requisições com 0% de falha e p95 de 77,50 ms; é um smoke, não um SLA.
 - A concorrência usa 10 threads e uma barreira; o timeout usa atraso de 1,5 s e cliente de 0,5 s.
 - A API é local e simulada; não há latência de rede real.
 - O ISO 8583 é um laboratório de formato, não uma implementação de produção.

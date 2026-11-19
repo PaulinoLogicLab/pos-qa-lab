@@ -42,13 +42,16 @@
 | RNF-04 | Relatórios por caso | todos | `output.xml`, `log.html`, `report.html` | Coberto |
 | RNF-05 | Reprodutibilidade | `scripts/run_suite.py` | sobe API, espera health, executa e encerra | Coberto |
 | RNF-06 | Execução paralela e evidência por caso | `scripts/run_parallel.py` + listener | Pabot 4 processos e JSONL por PID | Coberto |
+| RNF-07 | Contrato OpenAPI das respostas | `tests/test_openapi_contract.py` | 4 schemas validados | Coberto |
+| RNF-08 | Performance e estabilidade | `performance/payment_load.js` | k6 405 req, p95 125,46 ms | Coberto |
+| RNF-09 | Cobertura mínima de código | `pytest --cov` | 88,9%, gate 85% | Coberto |
 
 ## 3. Cobertura
 
 | Métrica | Valor |
 |---|---:|
 | Requisitos funcionais | 24 |
-| Requisitos não funcionais | 6 |
+| Requisitos não funcionais | 9 |
 | Casos de núcleo/ISO/hardware executados | 44 |
 | Casos de dispositivo executados | 5 |
 | Casos executados com requisito mapeado | 49/49 |

@@ -52,5 +52,18 @@ services:
       - ./reports:/app/reports
     command: ["python", "scripts/run_parallel.py", "--processes", "4", "--no-api"]
 
+  k6:
+    image: grafana/k6:latest
+    profiles: ["perf"]
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      BASE_URL: http://api:8000
+    volumes:
+      - ./performance:/scripts:ro
+      - ./reports:/reports
+    command: ["run", "/scripts/payment_load.js"]
+
 volumes:
   pos_qa_data:

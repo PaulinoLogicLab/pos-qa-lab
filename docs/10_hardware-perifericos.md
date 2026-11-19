@@ -1,7 +1,7 @@
 # 10 — Hardware e periféricos simulados
 
 **Projeto:** POS QA Lab
-**Versão:** 0.5.0
+**Versão:** 0.6.0
 **Data:** 19/11/2026
 
 ## 1. Por que simular
