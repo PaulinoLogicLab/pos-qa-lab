@@ -1,7 +1,7 @@
 *** Settings ***
-Library    ../../libraries/PaymentApi.py    http://127.0.0.1:8000
+Library    ../../libraries/PaymentApi.py
 Library    ../../libraries/Database.py
-Library    ../../libraries/Terminal.py    http://127.0.0.1:8000
+Library    ../../libraries/Terminal.py
 Library    ../../libraries/Iso8583.py
 Library    ../../libraries/Iso8583Acquirer.py
 Library    Collections

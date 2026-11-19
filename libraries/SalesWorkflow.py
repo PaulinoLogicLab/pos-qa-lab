@@ -6,6 +6,7 @@ Python, keeping the .robot files focused on the business scenario.
 
 from __future__ import annotations
 
+import os
 import sys
 from pathlib import Path
 from uuid import uuid4
@@ -19,8 +20,10 @@ from PaymentApi import PaymentApi  # noqa: E402
 
 
 class SalesWorkflow:
-    def __init__(self, base_url: str = "http://127.0.0.1:8000") -> None:
-        self.api = PaymentApi(base_url)
+    def __init__(self, base_url: str | None = None) -> None:
+        self.api = PaymentApi(
+            base_url or os.getenv("API_URL", "http://127.0.0.1:8000")
+        )
 
     def create_sale(
         self,

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import sys
 from pathlib import Path
 
@@ -15,14 +16,14 @@ from src.terminal.simulator import TerminalSimulator  # noqa: E402
 class Terminal:
     def __init__(
         self,
-        api_url: str = "http://127.0.0.1:8000",
+        api_url: str | None = None,
         terminal_id: str = "TERM0001",
         db_path: str | None = None,
     ) -> None:
-        self.api_url = api_url
+        self.api_url = api_url or os.getenv("API_URL", "http://127.0.0.1:8000")
         self.terminal_id = terminal_id
         self.db_path = db_path
-        self._terminal = TerminalSimulator(api_url, terminal_id, db_path)
+        self._terminal = TerminalSimulator(self.api_url, terminal_id, db_path)
 
     def use_terminal(self, terminal_id: str, db_path: str | None = None):
         self.terminal_id = terminal_id

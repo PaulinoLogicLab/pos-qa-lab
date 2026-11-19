@@ -22,10 +22,11 @@
 | FIND-LAB-008 | `Acquirer` não tinha `transaction_count` para o teste de duplicidade | Baixa | Corrigido |
 | FIND-LAB-009 | Pabot não encontrava o executável `robot` no PATH do venv | Baixa | Corrigido |
 | FIND-LAB-010 | Listener usava `data.starttime`, inexistente no Robot 7 | Baixa | Corrigido |
+| FIND-LAB-011 | Runner local podia usar a API do Docker e ler banco diferente | Média | Corrigido |
 
 - Defeitos de produto/mock: **1** (DEF-LAB-002).
 - Defeitos de infraestrutura de teste: **2** (DEF-LAB-001 e DEF-LAB-004).
-- Achados de automação/implementação: **7** (FIND-LAB-003, 005, 006, 007, 008, 009 e 010).
+- Achados de automação/implementação: **8** (FIND-LAB-003, 005, 006, 007, 008, 009, 010 e 011).
 
 ## DEF-LAB-001 — Runner bloqueava a API
 
@@ -197,7 +198,7 @@ keyword genérica `Reset`, que não foi resolvida no contexto.
 
 **Correção:** prepender `Path(sys.executable).parent` ao `PATH` em `scripts/run_parallel.py`.
 
-**Reteste:** 37/37 em 4 processos, tempo de parede 6,34 s.
+**Reteste:** 37/37 em 4 processos, tempo de parede 7,84 s.
 
 ## FIND-LAB-010 — Listener usava atributo inexistente
 
@@ -213,6 +214,24 @@ keyword genérica `Reset`, que não foi resolvida no contexto.
 **Correção:** remover `data.starttime`; o JSONL já registra `timestamp` no evento.
 
 **Reteste:** listener gerou JSONL sem erros para os 37 casos.
+
+## FIND-LAB-011 — Runner local usava a API do Docker
+
+| Campo | Conteúdo |
+|---|---|
+| Severidade | Média |
+| Status | Corrigido |
+| Tipo | Isolamento de ambiente |
+| Evidência | 13 falhas locais `None == None` após subir a API em Docker na porta 8000 |
+
+**Sintoma:** o runner local não conseguia subir a própria API porque a porta 8000 já estava ocupada
+pelo container. Ele então executava os testes contra a API do Docker, mas as asserções liam o banco
+local — resultados inconsistentes.
+
+**Correção:** preflight em `run_suite.py` e `run_parallel.py`; se `/health` já responde na porta, o
+runner falha com orientação para parar o container ou usar `--no-api`.
+
+**Reteste:** após `docker compose down -v`, 37/37 local; Docker Compose 37/37.
 
 ## Lições
 

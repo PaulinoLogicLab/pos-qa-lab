@@ -1,7 +1,7 @@
 *** Settings ***
 Documentation     Teste data-driven de vendas: valores, parcelas, recusa e limites.
 ...               As linhas chamam a keyword de negocio Create And Assert Sale.
-Library           ../../libraries/SalesWorkflow.py    http://127.0.0.1:8000
+Library           ../../libraries/SalesWorkflow.py
 Resource          ../resources/common.resource
 Suite Setup       Check Api Health
 Test Template     Create And Assert Sale

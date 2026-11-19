@@ -1,0 +1,56 @@
+services:
+  api:
+    build: .
+    image: pos-qa-lab:local
+    ports:
+      - "8000:8000"
+    environment:
+      POS_QA_DB: /app/data/pos_qa.db
+    volumes:
+      - pos_qa_data:/app/data
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2)",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
+
+  tests:
+    build: .
+    image: pos-qa-lab:local
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      API_URL: http://api:8000
+      POS_QA_DB: /app/data/pos_qa.db
+      PYTHONPATH: /app
+    volumes:
+      - pos_qa_data:/app/data
+      - ./reports:/app/reports
+    command: ["python", "scripts/run_suite.py", "--exclude", "device", "--no-api"]
+
+  parallel:
+    build: .
+    image: pos-qa-lab:local
+    profiles: ["parallel"]
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      API_URL: http://api:8000
+      POS_QA_DB: /app/data/pos_qa.db
+      PYTHONPATH: /app
+    volumes:
+      - pos_qa_data:/app/data
+      - ./reports:/app/reports
+    command: ["python", "scripts/run_parallel.py", "--processes", "4", "--no-api"]
+
+volumes:
+  pos_qa_data:

@@ -28,6 +28,13 @@ def wait_for_api(url: str, timeout: float = 25.0) -> bool:
     return False
 
 
+def api_is_up(url: str) -> bool:
+    try:
+        return requests.get(f"{url}/health", timeout=1).status_code == 200
+    except requests.RequestException:
+        return False
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--suite", default=None, help="Suite path (default: robot/suites)")
@@ -57,6 +64,13 @@ def main() -> int:
     api_process = None
     api_log = None
     if not args.no_api:
+        api_url = f"http://127.0.0.1:{args.port}"
+        if api_is_up(api_url):
+            print(
+                f"Ja existe uma API respondendo em {api_url}. "
+                "Pare o container/processo ou use --no-api."
+            )
+            return 1
         api_log_path = outputdir / "api.log"
         api_log = api_log_path.open("w", encoding="utf-8")
         api_process = subprocess.Popen(
