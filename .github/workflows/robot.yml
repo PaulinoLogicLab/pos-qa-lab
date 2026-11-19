@@ -9,12 +9,16 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Lint
@@ -23,13 +27,20 @@ jobs:
         run: python -m pytest
       - name: Robot core and ISO lab
         run: python scripts/run_suite.py --exclude device
-      - name: Summarize results
+      - name: Robot parallel with Pabot
+        if: matrix.python-version == '3.12'
+        run: python scripts/run_parallel.py --processes 4
+      - name: Summarize core results
         if: always()
         continue-on-error: true
         run: python scripts/summarize_results.py
+      - name: Summarize Pabot results
+        if: always() && matrix.python-version == '3.12'
+        continue-on-error: true
+        run: python scripts/summarize_results.py reports/pabot/output.xml
       - name: Upload Robot reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: robot-reports
-          path: reports/robot/
+          name: robot-reports-${{ matrix.python-version }}
+          path: reports/

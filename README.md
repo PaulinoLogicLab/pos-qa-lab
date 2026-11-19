@@ -14,14 +14,15 @@ idempotência, cancelamento, estorno, parcelamento, reinício e atualização de
 
 | Métrica | Valor |
 |---|---:|
-| Casos Robot executados | **37** |
-| Aprovados | **37** |
+| Casos Robot executados | **42** |
+| Aprovados | **42** |
 | Reprovados | **0** |
-| Tempo somado dos casos | **4,01 s (núcleo/ISO) + 104,69 s (device)** |
+| Tempo somado dos casos | **4,24 s (núcleo/ISO) + 104,69 s (device)** |
+| Execução paralela | **37/37 em 4 processos Pabot** |
 | Testes unitários Python | **39 aprovados** |
 | Casos de dispositivo | **5/5 aprovados em emulador Android 16** |
-| Defeitos do laboratório corrigidos | **3** (+5 achados de automação/implementação) |
-| CI | **32/32 no Ubuntu + Python 3.12** |
+| Defeitos do laboratório corrigidos | **3** (+7 achados de automação/implementação) |
+| CI | **37/37 em Python 3.11, 3.12 e 3.13** |
 
 Detalhes em [relatório de execução](docs/05_relatorio-execucao.md) e [relatório de defeitos](docs/06_relatorio-defeitos.md).
 
@@ -42,6 +43,8 @@ Detalhes em [relatório de execução](docs/05_relatorio-execucao.md) e [relató
 - **Contratos de erro** (400/422/409) e `correlation_id` em API, banco e evento.
 - **ISO 8583**: MTI, bitmap, campos fixos/LLVAR, `0100/0110`, `0400/0410` e `0800/0810`.
 - **Android**: login, validação, carrinho, background/foreground e atualização de APK.
+- **Robot de produção**: library Python de negócio, testes data-driven, Pabot, listener de evidência
+  e CI matrix em três versões do Python.
 
 ## Arquitetura
 
@@ -100,7 +103,17 @@ Rodar apenas um grupo:
 python scripts/run_suite.py --include resilience
 python scripts/run_suite.py --include iso8583
 python scripts/run_suite.py --include contract
+python scripts/run_suite.py --include data_driven
 ```
+
+Execução paralela com Pabot:
+
+```bash
+python scripts/run_parallel.py --processes 4
+```
+
+O listener grava um JSONL por processo em `reports/*/evidence/`, com início, fim, tags, status e tempo
+de cada caso.
 
 ## Device suite
 
@@ -141,7 +154,7 @@ pos-qa-lab/
   src/terminal/         # simulador com fila offline
   iso8583_lab/          # parser/construtor didático
   libraries/            # bibliotecas Robot
-  robot/suites/         # 32 casos de núcleo, captura/liquidação, concorrência e ISO
+  robot/suites/         # 37 casos de núcleo, captura/liquidação, concorrência, data-driven e ISO
   robot/device/         # 5 casos de dispositivo
   tests/                # 39 testes unitários
   scripts/              # runner, resumo, download e upgrade
@@ -165,6 +178,7 @@ pos-qa-lab/
 - [Relatório de execução](docs/05_relatorio-execucao.md)
 - [Relatório de defeitos](docs/06_relatorio-defeitos.md)
 - [Limitações](docs/07_limitacoes.md)
+- [Arquitetura Robot](docs/08_robot-arquitetura.md)
 
 ## Licença
 

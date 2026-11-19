@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.3.0 — 19/11/2026
+
+### Added
+
+- Library Python de negócio `SalesWorkflow` (`Create And Assert Sale`, captura e liquidação).
+- Suíte data-driven `09_data_driven_sales` com 5 casos de valores, parcelas e recusa.
+- Execução paralela com Pabot (`scripts/run_parallel.py`, 4 processos).
+- Listener `RobotListener` com evidência JSONL por processo.
+- CI matrix Python 3.11/3.12/3.13; Pabot na versão 3.12.
+- Documento `docs/08_robot-arquitetura.md`.
+
+### Fixed
+
+- `FIND-LAB-009`: Pabot não encontrava o executável `robot` porque o `PATH` não incluía o venv.
+- `FIND-LAB-010`: listener usava `data.starttime`, inexistente no Robot 7.
+
 ## 0.2.0 — 19/11/2026
 
 ### Added
