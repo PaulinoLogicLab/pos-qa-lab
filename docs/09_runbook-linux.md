@@ -39,9 +39,13 @@ python scripts/run_suite.py --exclude device
 docker build -t pos-qa-lab:local .
 docker compose up -d api
 curl http://127.0.0.1:8000/health
+mkdir -p reports && chmod 777 reports
 docker compose up --abort-on-container-exit --exit-code-from tests tests
 docker compose down -v
 ```
+
+Em Linux, o bind mount `./reports` precisa ser gravável pelo usuário `app` do container. O `chmod 777`
+é aceitável no laboratório; em produção use volume nomeado ou UID/GID alinhados.
 
 - A API usa o volume `pos_qa_data`.
 - O serviço `tests` compartilha o mesmo volume para validar o banco.

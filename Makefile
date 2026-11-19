@@ -33,6 +33,7 @@ logs:
 	$(COMPOSE) logs -f api
 
 docker-test:
+	mkdir -p reports; chmod 777 reports 2>/dev/null || true; \
 	$(COMPOSE) up --abort-on-container-exit --exit-code-from tests tests; \
 	status=$$?; $(COMPOSE) down -v; exit $$status
 
