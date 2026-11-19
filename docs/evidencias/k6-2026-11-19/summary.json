@@ -1,0 +1,8 @@
+{
+  "requests": 436,
+  "http_failed_rate": 0,
+  "p95_ms": 77.5045545,
+  "checks_passed": 872,
+  "checks_failed": 0,
+  "thresholds_passed": true
+}

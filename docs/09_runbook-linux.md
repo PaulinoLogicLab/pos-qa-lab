@@ -1,7 +1,7 @@
 # 09 — Runbook Linux
 
 **Projeto:** POS QA Lab
-**Versão:** 0.5.0
+**Versão:** 0.6.0
 **Data:** 19/11/2026
 
 ## 1. Pré-requisitos
@@ -66,6 +66,7 @@ docker compose --profile parallel run --rm parallel
 | `make robot` | Robot núcleo/ISO |
 | `make parallel` | Pabot com 4 processos |
 | `make device` | device suite |
+| `make perf` | smoke de carga com k6 |
 | `make test` | lint + unit + robot |
 | `make up` | sobe a API em Docker |
 | `make down` | derruba containers |
@@ -85,6 +86,15 @@ Hardware simulado:
 
 ```bash
 python scripts/run_suite.py --include hardware
+```
+
+Performance:
+
+```bash
+make perf
+# ou
+docker compose up -d api
+docker compose --profile perf run --rm k6
 ```
 
 `collect_logs.sh` empacota `reports/robot`, `reports/pabot`, `reports/device_run` e `reports/logcat`

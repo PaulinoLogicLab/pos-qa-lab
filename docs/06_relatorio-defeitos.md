@@ -275,3 +275,5 @@ documenta o requisito e a alternativa com volume nomeado.
 - Nomes de keywords devem ser únicos por responsabilidade ou qualificados no uso.
 - Um caso de contrato no sync encontrou um comportamento que os casos felizes não pegariam.
 - O device suite só entra no relatório como aprovado depois de executado em Android/Appium.
+- Status de periférico deve ser controlado pelo teste, não sobrescrito pelo workflow.
+- Ambientes local e Docker precisam de isolamento explícito de porta e banco.

@@ -1,7 +1,7 @@
 # 02 — Plano de teste
 
 **Projeto:** POS QA Lab
-**Versão:** 0.5.0
+**Versão:** 0.6.0
 **Data:** 19/11/2026
 
 ## 1. Estratégia
@@ -16,6 +16,7 @@ Teste baseado em risco, com foco nas falhas que mais impactam uma jornada de pag
 5. **Dispositivo**: instalação, atualização, login e navegação no app público.
 6. **Escala e evidência**: data-driven, Pabot e listener JSONL por caso.
 7. **Hardware**: impressora, pinpad, reboot, firmware e configuração simulados.
+8. **Qualidade de API**: contrato OpenAPI, propriedades, cobertura e performance com k6.
 
 ## 2. Níveis e tipos
 
@@ -37,7 +38,7 @@ Teste baseado em risco, com foco nas falhas que mais impactam uma jornada de pag
 | Uvicorn | 0.54.0 |
 | Banco | SQLite local (`data/pos_qa.db`) |
 | API | `http://127.0.0.1:8000` |
-| Docker | `python:3.12-slim`, Compose com `api` + `tests` |
+| Docker | `python:3.12-slim`, Compose com `api`, `tests`, `parallel` e `k6` |
 | Device | Android + Appium 2 + UiAutomator2 + My Demo App |
 
 ## 4. Dados de teste

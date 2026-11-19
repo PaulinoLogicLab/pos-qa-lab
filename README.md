@@ -17,13 +17,15 @@ idempotência, cancelamento, estorno, parcelamento, reinício e atualização de
 | Casos Robot executados | **49** |
 | Aprovados | **49** |
 | Reprovados | **0** |
-| Tempo somado dos casos | **3,89 s (núcleo/ISO) + 104,69 s (device)** |
+| Tempo somado dos casos | **4,08 s (núcleo/ISO/hardware) + 104,69 s (device)** |
 | Execução paralela | **44/44 em 4 processos Pabot** |
 | Docker Compose | **44/44 no container Linux** |
-| Testes unitários Python | **45 aprovados** |
+| Testes unitários Python | **52 aprovados** |
+| Cobertura de linhas | **88,9%** |
+| k6 | **436 req, 0% falha, p95 77,50 ms** |
 | Casos de dispositivo | **5/5 aprovados em emulador Android 16** |
 | Defeitos do laboratório corrigidos | **3** (+10 achados de automação/implementação) |
-| CI | **44/44 em Python 3.11, 3.12 e 3.13 + job Docker** |
+| CI | **44/44 em Python 3.11, 3.12 e 3.13 + Docker + k6** |
 
 Detalhes em [relatório de execução](docs/05_relatorio-execucao.md) e [relatório de defeitos](docs/06_relatorio-defeitos.md).
 
@@ -49,6 +51,7 @@ Detalhes em [relatório de execução](docs/05_relatorio-execucao.md) e [relató
 - **Linux e operação**: Dockerfile, Docker Compose, Makefile, scripts shell, runbook e job Docker no CI.
 - **Hardware simulado**: impressora (papel/acesso), pinpad (timeout/cancelamento), reboot,
   atualização de firmware e configuração.
+- **Qualidade de API**: contrato OpenAPI, property-based testing, cobertura e k6.
 
 ## Arquitetura
 
@@ -95,10 +98,10 @@ Relatórios:
 - `reports/robot/summary.json`
 - `reports/robot/api.log`
 
-Testes unitários:
+Testes unitários e cobertura:
 
 ```bash
-pytest
+pytest --cov=src --cov=iso8583_lab --cov-report=term --cov-fail-under=85
 ```
 
 Rodar apenas um grupo:
@@ -118,6 +121,15 @@ python scripts/run_parallel.py --processes 4
 
 O listener grava um JSONL por processo em `reports/*/evidence/`, com início, fim, tags, status e tempo
 de cada caso.
+
+Performance com k6:
+
+```bash
+docker compose up -d api
+docker compose --profile perf run --rm k6
+# ou
+make perf
+```
 
 ## Docker
 
@@ -173,7 +185,7 @@ pos-qa-lab/
   libraries/            # bibliotecas Robot
   robot/suites/         # 44 casos de núcleo, hardware, captura/liquidação, concorrência, data-driven e ISO
   robot/device/         # 5 casos de dispositivo
-  tests/                # 45 testes unitários
+  tests/                # 52 testes unitários
   scripts/              # runner, resumo, download e upgrade
 ```
 
@@ -198,6 +210,7 @@ pos-qa-lab/
 - [Arquitetura Robot](docs/08_robot-arquitetura.md)
 - [Runbook Linux](docs/09_runbook-linux.md)
 - [Hardware e periféricos](docs/10_hardware-perifericos.md)
+- [Métricas de qualidade](docs/11_metricas-qualidade.md)
 
 ## Licença
 

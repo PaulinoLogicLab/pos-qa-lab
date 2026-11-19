@@ -35,6 +35,8 @@ Este documento existe para evitar que o laboratório seja lido como algo que ele
 - O Pabot compartilha o banco entre workers; a massa é isolada por chave/terminal.
 - O listener registra ciclo de vida e status, não request/response HTTP completos.
 - O Compose é de laboratório; não há hardening de produção, TLS ou gestão de segredos.
+- O k6 é um smoke de 10 VUs, não um SLA de produção.
+- Mutation testing não foi executado; a cobertura de 88,9% não mede a qualidade das asserções.
 
 ## 3. O que o device suite cobre
 

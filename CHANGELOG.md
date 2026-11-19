@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.6.0 — 19/11/2026
+
+### Added
+
+- Response models Pydantic e schemas no `/openapi.json`.
+- Teste de contrato OpenAPI para pagamento, captura, liquidação e erro.
+- Property-based testing com Hypothesis para parcelas, centavos e ISO 8583.
+- Gate de cobertura de 85% no CI (resultado: 88,9%).
+- Smoke de performance com k6: 405 requisições, 0% falha, p95 125,46 ms.
+- Profile `perf` no Docker Compose, alvo `make perf` e step no CI.
+- Documento `docs/11_metricas-qualidade.md`.
+
+### Fixed
+
+- Resolução dos `$ref` locais no teste de contrato OpenAPI.
+
 ## 0.5.0 — 19/11/2026
 
 ### Added
