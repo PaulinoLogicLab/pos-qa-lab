@@ -2,7 +2,7 @@
 
 **Projeto:** POS QA Lab
 **Data de execução:** 19/11/2026
-**Total:** 37 casos (32 de núcleo/ISO + 5 de dispositivo)
+**Total:** 42 casos (37 de núcleo/ISO + 5 de dispositivo)
 
 ## Dados de teste
 
@@ -111,7 +111,21 @@ retry após 2 s recupera a mesma transação e mantém uma linha.
 
 **Limite:** ASCII, sem BCD, MAC, rede real ou certificação EMV/PCI.
 
-## 10. Dispositivo — My Demo App
+## 10. Data-driven de vendas
+
+| ID | Objetivo | Prioridade | Status |
+|---|---|---|---|
+| CT-DD-01 | Venda aprovada de 10,00 em 1x | P1 | Aprovado |
+| CT-DD-02 | Venda aprovada de 100,00 em 3x | P1 | Aprovado |
+| CT-DD-03 | Venda negada de 89,90 | P1 | Aprovado |
+| CT-DD-04 | Venda no limite mínimo de 0,01 | P2 | Aprovado |
+| CT-DD-05 | Venda alta de 999.999,99 em 12x | P2 | Aprovado |
+
+**Implementação:** `Test Template` do Robot chamando a keyword de negócio `Create And Assert Sale`,
+da library `SalesWorkflow.py`. Cada linha é um caso; a library valida HTTP 201, status, código de
+resposta e quantidade de parcelas.
+
+## 11. Dispositivo — My Demo App
 
 | ID | Objetivo | Prioridade | Status |
 |---|---|---|---|
@@ -125,7 +139,7 @@ retry após 2 s recupera a mesma transação e mantém uma linha.
 My Demo App 2.3.0, Appium 3.5.0 e UiAutomator2 7.0.0.
 **Pendência:** o script `scripts/device_upgrade_check.py` ainda não foi executado.
 
-## 11. Casos não aplicáveis
+## 12. Casos não aplicáveis
 
 - Impressão térmica, pinpad, EMV, PCI PTS e certificação de bandeira: fora do escopo do laboratório.
 - Teste de carga e segurança ofensiva: evolução futura, não parte desta entrega.

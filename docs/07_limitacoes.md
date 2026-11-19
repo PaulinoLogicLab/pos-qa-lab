@@ -30,6 +30,8 @@ Este documento existe para evitar que o laboratório seja lido como algo que ele
 - Liquidação real, clearing, certificação de bandeira e conciliação com adquirente.
 - A liquidação é um snapshot: um estorno feito depois do fechamento não recalcula o lote.
 - A captura parcial não libera automaticamente o saldo restante da autorização.
+- O Pabot compartilha o banco entre workers; a massa é isolada por chave/terminal.
+- O listener registra ciclo de vida e status, não request/response HTTP completos.
 
 ## 3. O que o device suite cobre
 

@@ -1,7 +1,7 @@
 # 02 — Plano de teste
 
 **Projeto:** POS QA Lab
-**Versão:** 0.2.0
+**Versão:** 0.3.0
 **Data:** 19/11/2026
 
 ## 1. Estratégia
@@ -14,6 +14,7 @@ Teste baseado em risco, com foco nas falhas que mais impactam uma jornada de pag
 3. **Contrato e observabilidade**: validação de entrada, códigos de erro, `correlation_id` e eventos.
 4. **Formato**: parsing e fluxo ISO 8583 com dados sintéticos.
 5. **Dispositivo**: instalação, atualização, login e navegação no app público.
+6. **Escala e evidência**: data-driven, Pabot e listener JSONL por caso.
 
 ## 2. Níveis e tipos
 
@@ -56,7 +57,7 @@ Teste baseado em risco, com foco nas falhas que mais impactam uma jornada de pag
 ## 6. Critérios de saída
 
 - 100% dos casos do núcleo e ISO executados.
-- 32/32 casos de núcleo/ISO aprovados.
+- 37/37 casos de núcleo/ISO aprovados.
 - Nenhuma falha aberta no núcleo.
 - Relatório e resumo gerados.
 - Defeitos encontrados com evidência e status.

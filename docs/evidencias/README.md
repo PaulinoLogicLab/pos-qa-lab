@@ -3,12 +3,14 @@
 ## Núcleo + ISO 8583
 
 - **Comando:** `python scripts/run_suite.py --exclude device`
-- **Resultado:** 32/32 aprovados, 0 falhas, 4,01 s
+- **Resultado:** 37/37 aprovados, 0 falhas, 4,24 s
 - **Cobertura:** venda, cancelamento/estorno, captura, liquidação, resiliência, concorrência,
-  contratos, ISO 8583 (parser e fluxo).
+  contratos, data-driven e ISO 8583 (parser e fluxo).
+- **Paralelo:** 37/37 em 4 processos Pabot (tempo de parede 6,34 s).
 - **Resumo:** [core-2026-11-19/summary.json](core-2026-11-19/summary.json)
-- **Relatórios completos:** gerados localmente em `reports/robot/` e publicados como artifact no
-  GitHub Actions (`robot-core`).
+- **Pabot:** [pabot-2026-11-19/summary.json](pabot-2026-11-19/summary.json)
+- **Relatórios completos:** gerados localmente em `reports/robot/` e `reports/pabot/`, publicados
+  como artifact no GitHub Actions (`robot-core`).
 
 ## Device — Sauce Labs My Demo App
 

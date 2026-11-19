@@ -48,6 +48,11 @@ def main() -> int:
     env = os.environ.copy()
     env["PYTHONPATH"] = str(ROOT) + os.pathsep + env.get("PYTHONPATH", "")
     env.setdefault("POS_QA_DB", str(ROOT / "data" / "pos_qa.db"))
+    evidence_dir = outputdir / "evidence"
+    evidence_dir.mkdir(parents=True, exist_ok=True)
+    for stale in evidence_dir.glob("events-*.jsonl"):
+        stale.unlink()
+    env["ROBOT_EVIDENCE_DIR"] = str(evidence_dir)
 
     api_process = None
     api_log = None
@@ -88,6 +93,8 @@ def main() -> int:
         "report.html",
         "--log",
         "log.html",
+        "--listener",
+        str(ROOT / "libraries" / "RobotListener.py"),
     ]
     if args.include:
         robot_command += ["--include", args.include]

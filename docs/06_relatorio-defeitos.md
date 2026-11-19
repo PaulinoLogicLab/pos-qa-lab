@@ -20,10 +20,12 @@
 | FIND-LAB-006 | CT-DEV-04 usava container não clicável e o botão errado para abrir o carrinho | Baixa | Corrigido |
 | FIND-LAB-007 | `Reset Acquirer` não era exposto porque o método se chamava `reset` | Baixa | Corrigido |
 | FIND-LAB-008 | `Acquirer` não tinha `transaction_count` para o teste de duplicidade | Baixa | Corrigido |
+| FIND-LAB-009 | Pabot não encontrava o executável `robot` no PATH do venv | Baixa | Corrigido |
+| FIND-LAB-010 | Listener usava `data.starttime`, inexistente no Robot 7 | Baixa | Corrigido |
 
 - Defeitos de produto/mock: **1** (DEF-LAB-002).
 - Defeitos de infraestrutura de teste: **2** (DEF-LAB-001 e DEF-LAB-004).
-- Achados de automação/implementação: **5** (FIND-LAB-003, 005, 006, 007 e 008).
+- Achados de automação/implementação: **7** (FIND-LAB-003, 005, 006, 007, 008, 009 e 010).
 
 ## DEF-LAB-001 — Runner bloqueava a API
 
@@ -178,6 +180,39 @@ keyword genérica `Reset`, que não foi resolvida no contexto.
 **Correção:** adicionar `Acquirer.transaction_count()` e expor `Transaction Count` na library Robot.
 
 **Reteste:** teste unitário e CT-ISO-08 aprovados.
+
+## FIND-LAB-009 — Pabot não encontrava o `robot`
+
+| Campo | Conteúdo |
+|---|---|
+| Severidade | Baixa |
+| Status | Corrigido |
+| Tipo | Configuração de ambiente |
+| Evidência | `FileNotFoundError: [WinError 2]` nos subprocessos do Pabot |
+
+**Sintoma:** o Pabot iniciava, mas todos os workers falhavam antes de executar a suíte.
+
+**Causa:** o `PATH` herdado não incluía `\.venv\Scripts`, então o Pabot não encontrava o comando
+`robot` usado internamente.
+
+**Correção:** prepender `Path(sys.executable).parent` ao `PATH` em `scripts/run_parallel.py`.
+
+**Reteste:** 37/37 em 4 processos, tempo de parede 6,34 s.
+
+## FIND-LAB-010 — Listener usava atributo inexistente
+
+| Campo | Conteúdo |
+|---|---|
+| Severidade | Baixa |
+| Status | Corrigido |
+| Tipo | API do listener |
+| Evidência | 36 erros `'TestCase' object has no attribute 'starttime'` no log |
+
+**Sintoma:** cada início de teste gerava erro do listener, embora os testes passassem.
+
+**Correção:** remover `data.starttime`; o JSONL já registra `timestamp` no evento.
+
+**Reteste:** listener gerou JSONL sem erros para os 37 casos.
 
 ## Lições
 

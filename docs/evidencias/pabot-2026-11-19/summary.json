@@ -1,0 +1,268 @@
+{
+  "total": 37,
+  "passed": 37,
+  "failed": 0,
+  "skipped": 0,
+  "elapsed_seconds": 4.31,
+  "suites": [
+    {
+      "name": "01 Sales",
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "elapsed_seconds": 0.128
+    },
+    {
+      "name": "02 Cancellation Refund",
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "elapsed_seconds": 0.151
+    },
+    {
+      "name": "03 Resilience",
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "elapsed_seconds": 0.206
+    },
+    {
+      "name": "04 Contracts Observability",
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "elapsed_seconds": 0.084
+    },
+    {
+      "name": "05 Capture Settlement",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "elapsed_seconds": 0.772
+    },
+    {
+      "name": "06 Iso8583 Lab",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "elapsed_seconds": 0.022
+    },
+    {
+      "name": "07 Concurrency Faults",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "elapsed_seconds": 2.766
+    },
+    {
+      "name": "08 Iso8583 Flow",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "elapsed_seconds": 0.032
+    },
+    {
+      "name": "09 Data Driven Sales",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "elapsed_seconds": 0.152
+    }
+  ],
+  "tests": [
+    {
+      "name": "CT-PAY-01 Venda aprovada com chave de idempotencia",
+      "status": "PASS",
+      "elapsed_seconds": 0.044
+    },
+    {
+      "name": "CT-PAY-02 Venda negada com codigo de resposta",
+      "status": "PASS",
+      "elapsed_seconds": 0.04
+    },
+    {
+      "name": "CT-PAY-05 Parcelamento em tres vezes com arredondamento",
+      "status": "PASS",
+      "elapsed_seconds": 0.044
+    },
+    {
+      "name": "CT-PAY-03 Cancelamento antes da captura",
+      "status": "PASS",
+      "elapsed_seconds": 0.046
+    },
+    {
+      "name": "CT-PAY-04 Estorno total e parcial apos captura",
+      "status": "PASS",
+      "elapsed_seconds": 0.048
+    },
+    {
+      "name": "CT-PAY-06 Transicoes invalidas sao rejeitadas",
+      "status": "PASS",
+      "elapsed_seconds": 0.057
+    },
+    {
+      "name": "CT-RES-01 Repeticao com a mesma chave nao cobra duas vezes",
+      "status": "PASS",
+      "elapsed_seconds": 0.041
+    },
+    {
+      "name": "CT-RES-02 Timeout seguido de retry nao duplica a transacao",
+      "status": "PASS",
+      "elapsed_seconds": 0.06
+    },
+    {
+      "name": "CT-RES-03 Fila offline sincroniza quando a conexao volta",
+      "status": "PASS",
+      "elapsed_seconds": 0.045
+    },
+    {
+      "name": "CT-RES-04 Reinicio do terminal preserva a fila offline",
+      "status": "PASS",
+      "elapsed_seconds": 0.06
+    },
+    {
+      "name": "CT-CON-01 Contrato rejeita payload e cabecalhos invalidos",
+      "status": "PASS",
+      "elapsed_seconds": 0.044
+    },
+    {
+      "name": "CT-OBS-01 Correlation ID aparece na resposta, no banco e no evento",
+      "status": "PASS",
+      "elapsed_seconds": 0.025
+    },
+    {
+      "name": "CT-CON-02 Sync rejeita transacao de outro terminal",
+      "status": "PASS",
+      "elapsed_seconds": 0.014
+    },
+    {
+      "name": "CT-CAP-01 Captura total de transacao autorizada",
+      "status": "PASS",
+      "elapsed_seconds": 0.05
+    },
+    {
+      "name": "CT-CAP-02 Captura parcial e estorno do valor capturado",
+      "status": "PASS",
+      "elapsed_seconds": 0.233
+    },
+    {
+      "name": "CT-CAP-03 Captura duplicada e captura apos cancelamento",
+      "status": "PASS",
+      "elapsed_seconds": 0.151
+    },
+    {
+      "name": "CT-SET-01 Liquidacao calcula bruto, estorno e liquido",
+      "status": "PASS",
+      "elapsed_seconds": 0.114
+    },
+    {
+      "name": "CT-SET-02 Liquidacao e idempotente e lote vazio e controlado",
+      "status": "PASS",
+      "elapsed_seconds": 0.124
+    },
+    {
+      "name": "CT-SET-03 Chave de liquidacao nao pode ser usada em outro terminal",
+      "status": "PASS",
+      "elapsed_seconds": 0.1
+    },
+    {
+      "name": "CT-ISO-01 Parse de mensagem 0100",
+      "status": "PASS",
+      "elapsed_seconds": 0.007
+    },
+    {
+      "name": "CT-ISO-02 Parse de resposta 0110 com codigo 39",
+      "status": "PASS",
+      "elapsed_seconds": 0.003
+    },
+    {
+      "name": "CT-ISO-03 Bitmap secundario e campo 70",
+      "status": "PASS",
+      "elapsed_seconds": 0.004
+    },
+    {
+      "name": "CT-ISO-04 Mensagens invalidas sao rejeitadas",
+      "status": "PASS",
+      "elapsed_seconds": 0.005
+    },
+    {
+      "name": "CT-ISO-05 Round-trip build e parse",
+      "status": "PASS",
+      "elapsed_seconds": 0.003
+    },
+    {
+      "name": "CT-RES-05 Dez requisicoes simultaneas geram uma unica cobranca",
+      "status": "PASS",
+      "elapsed_seconds": 0.225
+    },
+    {
+      "name": "CT-RES-06 Timeout no cliente seguido de retry nao duplica",
+      "status": "PASS",
+      "elapsed_seconds": 2.54
+    },
+    {
+      "name": "CT-ISO-06 Autorizacao aprovada retorna 0110 com codigo 00",
+      "status": "PASS",
+      "elapsed_seconds": 0.006
+    },
+    {
+      "name": "CT-ISO-07 Autorizacao negada retorna 05 sem approval code",
+      "status": "PASS",
+      "elapsed_seconds": 0.006
+    },
+    {
+      "name": "CT-ISO-08 Duplicidade de STAN nao cria segunda transacao",
+      "status": "PASS",
+      "elapsed_seconds": 0.006
+    },
+    {
+      "name": "CT-ISO-09 Reversao 0400 retorna 0410 e e idempotente",
+      "status": "PASS",
+      "elapsed_seconds": 0.005
+    },
+    {
+      "name": "CT-ISO-10 Network management 0800 retorna 0810",
+      "status": "PASS",
+      "elapsed_seconds": 0.004
+    },
+    {
+      "name": "CT-ISO-11 MTI nao suportado gera erro controlado",
+      "status": "PASS",
+      "elapsed_seconds": 0.005
+    },
+    {
+      "name": "CT-DD-01 Venda aprovada de 10,00 em 1x",
+      "status": "PASS",
+      "elapsed_seconds": 0.024
+    },
+    {
+      "name": "CT-DD-02 Venda aprovada de 100,00 em 3x",
+      "status": "PASS",
+      "elapsed_seconds": 0.035
+    },
+    {
+      "name": "CT-DD-03 Venda negada de 89,90",
+      "status": "PASS",
+      "elapsed_seconds": 0.031
+    },
+    {
+      "name": "CT-DD-04 Venda aprovada no limite minimo de 0,01",
+      "status": "PASS",
+      "elapsed_seconds": 0.031
+    },
+    {
+      "name": "CT-DD-05 Venda alta de 999.999,99 em 12x",
+      "status": "PASS",
+      "elapsed_seconds": 0.031
+    }
+  ]
+}
