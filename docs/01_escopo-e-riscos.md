@@ -29,7 +29,7 @@ Demonstrar, com código e evidência:
 - Terminal simulator com máquina de estados e fila offline.
 - 13 casos de núcleo em Robot.
 - 5 casos de ISO 8583 em Robot.
-- 5 casos de dispositivo implementados.
+- 5 casos de dispositivo implementados e executados em emulador Android.
 - 25 testes unitários Python.
 - Runner que sobe e derruba a API automaticamente.
 - Relatórios Robot (`output.xml`, `log.html`, `report.html`) e resumo em JSON.

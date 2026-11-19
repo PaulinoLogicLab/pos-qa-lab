@@ -19,9 +19,9 @@
 | RF-10 | Correlação em API, banco e evento | CT-OBS-01 | header, `correlation_id`, evento | Coberto |
 | RF-11 | Sync restrito ao terminal da rota | CT-CON-02 | `TERMINAL_MISMATCH`, nenhuma linha | Coberto |
 | RF-12 | Parse ISO 8583 de mensagens sintéticas | CT-ISO-01 a CT-ISO-05 | `iso8583_lab`, campos e bitmap | Coberto |
-| RF-13 | Login e validação no app público | CT-DEV-01, CT-DEV-02, CT-DEV-03 | suíte implementada | Pendente de execução |
-| RF-14 | Carrinho no app público | CT-DEV-04 | suíte implementada | Pendente de execução |
-| RF-15 | Ciclo de vida do app (background/foreground) | CT-DEV-05 | suíte implementada | Pendente de execução |
+| RF-13 | Login e validação no app público | CT-DEV-01, CT-DEV-02, CT-DEV-03 | suíte executada em emulador | Coberto |
+| RF-14 | Carrinho no app público | CT-DEV-04 | suíte executada em emulador | Coberto |
+| RF-15 | Ciclo de vida do app (background/foreground) | CT-DEV-05 | suíte executada em emulador | Coberto |
 
 ## 2. Requisitos não funcionais
 
@@ -39,14 +39,15 @@
 |---|---:|
 | Requisitos funcionais | 15 |
 | Requisitos não funcionais | 5 |
-| Casos executados | 18 |
-| Casos de dispositivo implementados | 5 |
-| Casos executados com requisito mapeado | 18/18 |
+| Casos executados | 23 |
+| Casos de dispositivo executados | 5 |
+| Casos executados com requisito mapeado | 23/23 |
 | Casos de dispositivo com requisito mapeado | 5/5 |
 
 ## 4. Lacunas declaradas
 
-- RF-13 a RF-15 estão implementados, mas **não executados** neste ambiente.
+- O device suite foi executado em emulador, não em dispositivo físico/POS.
+- O script de atualização de APK está implementado, mas ainda não executado.
 - Não há requisito de impressão térmica, pinpad, EMV, PCI PTS ou certificação de bandeira.
 - O ISO 8583 cobre apenas ASCII e um subconjunto de campos; BCD, MAC e rede não estão implementados.
 - Não há teste de carga, segurança ofensiva ou acessibilidade nesta versão.

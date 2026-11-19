@@ -12,7 +12,7 @@ Test Tags         device
 *** Variables ***
 ${APPIUM_URL}       http://127.0.0.1:4723
 ${APP_PACKAGE}      com.saucelabs.mydemoapp.android
-${APP_ACTIVITY}     .view.activities.SplashActivity
+${APP_ACTIVITY}     com.saucelabs.mydemoapp.android.view.activities.SplashActivity
 ${DEVICE_NAME}      emulator-5554
 ${VALID_USER}       bod@example.com
 ${VALID_PASSWORD}   10203040
@@ -28,16 +28,18 @@ Open Test Application
     ...    platformName=Android
     ...    automationName=UiAutomator2
     ...    deviceName=${DEVICE_NAME}
+    ...    udid=${DEVICE_NAME}
     ...    appPackage=${APP_PACKAGE}
     ...    appActivity=${APP_ACTIVITY}
-    ...    noReset=${TRUE}
+    ...    appWaitActivity=${APP_ACTIVITY}
+    ...    noReset=${FALSE}
     ...    newCommandTimeout=120
     Wait Until Page Contains Element    id=${APP_PACKAGE}:id/menuIV    20s
 
 Open Menu And Login
     Click Element    id=${APP_PACKAGE}:id/menuIV
     Wait Until Page Contains Element    id=${APP_PACKAGE}:id/menuRV    10s
-    Swipe    start_x=540    start_y=1600    end_x=540    end_y=500    duration=600
+    Swipe    start_x=540    start_y=1600    end_x=540    end_y=500
     Click Element    xpath=//*[@text='Log In']
     Wait Until Page Contains Element    id=${APP_PACKAGE}:id/loginBtn    10s
 
@@ -85,9 +87,10 @@ CT-DEV-04 Adicionar produto ao carrinho
     Login With Valid User
     Wait Until Page Contains Element    id=${APP_PACKAGE}:id/productRV    15s
     Click Element    xpath=(//*[@resource-id='${APP_PACKAGE}:id/productIV'])[1]
-    Wait Until Page Contains Element    id=${APP_PACKAGE}:id/addToCartLL    10s
-    Click Element    id=${APP_PACKAGE}:id/addToCartLL
+    Wait Until Page Contains Element    id=${APP_PACKAGE}:id/cartBt    10s
     Click Element    id=${APP_PACKAGE}:id/cartBt
+    Wait Until Page Contains Element    id=${APP_PACKAGE}:id/cartRL    10s
+    Click Element    id=${APP_PACKAGE}:id/cartRL
     Wait Until Page Contains Element    id=${APP_PACKAGE}:id/totalPriceTV    10s
     Page Should Contain Element    id=${APP_PACKAGE}:id/totalPriceTV
 

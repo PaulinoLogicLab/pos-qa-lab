@@ -2,7 +2,7 @@
 
 **Projeto:** POS QA Lab
 **Data de execução:** 19/11/2026
-**Total:** 23 casos (18 executados + 5 de dispositivo implementados)
+**Total:** 23 casos (23 executados)
 
 ## Dados de teste
 
@@ -96,15 +96,17 @@ pagamento e no primeiro evento.
 
 | ID | Objetivo | Prioridade | Status |
 |---|---|---|---|
-| CT-DEV-01 | Login válido com `bod@example.com` | P1 | Implementado; não executado |
-| CT-DEV-02 | Login sem credenciais exibe “Username is required” | P2 | Implementado; não executado |
-| CT-DEV-03 | Usuário bloqueado exibe mensagem de bloqueio | P2 | Implementado; não executado |
-| CT-DEV-04 | Adicionar produto ao carrinho e abrir a tela do carrinho | P1 | Implementado; não executado |
-| CT-DEV-05 | Background/foreground preserva a sessão | P2 | Implementado; não executado |
+| CT-DEV-01 | Login válido com `bod@example.com` | P1 | Aprovado |
+| CT-DEV-02 | Login sem credenciais exibe “Username is required” | P2 | Aprovado |
+| CT-DEV-03 | Usuário bloqueado exibe mensagem de bloqueio | P2 | Aprovado |
+| CT-DEV-04 | Adicionar produto ao carrinho e abrir a tela do carrinho | P1 | Aprovado |
+| CT-DEV-05 | Background/foreground preserva a sessão | P2 | Aprovado |
 
-**Pré-requisitos:** Android SDK, emulador/dispositivo, Appium 2, UiAutomator2 e APK do demo.
-**Observação:** a suíte não foi executada neste ambiente. O script `scripts/device_upgrade_check.py`
-cobre a evidência de instalação/atualização quando houver dispositivo conectado.
+**Pré-requisitos:** Android SDK, emulador/dispositivo, Appium 2+, UiAutomator2 e APK do demo.
+**Execução:** 5/5 aprovados em 19/11/2026 no emulador `Pixel_8_Pro` (Android 16 / API 36), com
+My Demo App 2.3.0, Appium 3.5.0 e UiAutomator2 7.0.0.
+**Observação:** o script `scripts/device_upgrade_check.py` cobre a evidência de instalação/atualização,
+mas ainda não foi executado.
 
 ## 7. Casos não aplicáveis
 

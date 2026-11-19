@@ -16,10 +16,12 @@
 | DEF-LAB-002 | Sync aceitava transação de outro terminal | Média | Corrigido |
 | DEF-LAB-004 | Fila offline falhava no Linux por caminho sem separador | Média | Corrigido |
 | FIND-LAB-003 | Nome de keyword ambíguo em três libraries | Baixa | Corrigido |
+| FIND-LAB-005 | Activity relativa e falta de `udid` impediam a sessão Appium | Baixa | Corrigido |
+| FIND-LAB-006 | CT-DEV-04 usava container não clicável e o botão errado para abrir o carrinho | Baixa | Corrigido |
 
 - Defeitos de produto/mock: **1** (DEF-LAB-002).
 - Defeitos de infraestrutura de teste: **2** (DEF-LAB-001 e DEF-LAB-004).
-- Achado de automação: **1** (FIND-LAB-003).
+- Achados de automação: **3** (FIND-LAB-003, FIND-LAB-005 e FIND-LAB-006).
 
 ## DEF-LAB-001 — Runner bloqueava a API
 
@@ -108,6 +110,41 @@ barra, no Linux não, gerando `/tmpterminal_<key>.db` e falha ao abrir o banco.
 `Database.Get Events`) e keyword de negócio `Get Payment Row`.
 
 **Reteste:** 18/18 aprovados.
+
+## FIND-LAB-005 — Sessão Appium não abria o app
+
+| Campo | Conteúdo |
+|---|---|
+| Severidade | Baixa |
+| Status | Corrigido |
+| Tipo | Configuração de automação |
+| Evidência | Primeira execução do device suite: 5 falhas de setup |
+
+**Sintoma:** Appium não iniciava `com.saucelabs.mydemoapp.android` com a activity relativa
+`.view.activities.SplashActivity` e sem `udid`.
+
+**Correção:** usar a activity completa
+`com.saucelabs.mydemoapp.android.view.activities.SplashActivity`, informar `udid=emulator-5554`,
+`appWaitActivity` e `noReset=false`.
+
+**Reteste:** CT-DEV-01 passou isolado; depois 5/5 no emulador.
+
+## FIND-LAB-006 — CT-DEV-04 clicava no elemento errado
+
+| Campo | Conteúdo |
+|---|---|
+| Severidade | Baixa |
+| Status | Corrigido |
+| Tipo | Script de teste |
+| Evidência | Falha `totalPriceTV did not appear in 10 seconds` |
+
+**Causa:** o teste clicava no container `addToCartLL` (não clicável) e no botão `cartBt`, que é
+“Add to cart”, não o ícone do carrinho. A tela do carrinho nunca era aberta.
+
+**Correção:** clicar em `cartBt` para adicionar e em `cartRL` para abrir o carrinho; validar
+`totalPriceTV`.
+
+**Reteste:** CT-DEV-04 passou isolado e na suíte completa 5/5.
 
 ## Lições
 

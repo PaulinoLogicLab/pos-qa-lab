@@ -14,13 +14,13 @@ idempotência, cancelamento, estorno, parcelamento, reinício e atualização de
 
 | Métrica | Valor |
 |---|---:|
-| Casos Robot executados | **18** |
-| Aprovados | **18** |
+| Casos Robot executados | **23** |
+| Aprovados | **23** |
 | Reprovados | **0** |
-| Tempo somado dos casos | **0,64 s** |
+| Tempo somado dos casos | **0,64 s (núcleo/ISO) + 104,69 s (device)** |
 | Testes unitários Python | **25 aprovados** |
-| Casos de dispositivo implementados | **5** (não executados neste ambiente) |
-| Defeitos do laboratório corrigidos | **3** (+1 achado de automação) |
+| Casos de dispositivo | **5/5 aprovados em emulador Android 16** |
+| Defeitos do laboratório corrigidos | **3** (+3 achados de automação) |
 | CI | **18/18 no Ubuntu + Python 3.12** |
 
 Detalhes em [relatório de execução](docs/05_relatorio-execucao.md) e [relatório de defeitos](docs/06_relatorio-defeitos.md).
@@ -99,7 +99,11 @@ python scripts/run_suite.py --include contract
 
 ## Device suite
 
-Pré-requisitos: Android SDK/`adb`, emulador ou dispositivo, Appium 2 e `UiAutomator2`.
+**Resultado:** 5/5 aprovados em 19/11/2026 no emulador `Pixel_8_Pro`
+(`sdk_gphone64_x86_64`, Android 16 / API 36), com My Demo App 2.3.0, Appium 3.5.0 e
+UiAutomator2 7.0.0. Tempo dos casos: 104,69 s.
+
+Pré-requisitos: Android SDK/`adb`, emulador ou dispositivo, Appium 2+ e `UiAutomator2`.
 
 ```bash
 pip install -r requirements-device.txt
@@ -111,7 +115,7 @@ Windows PowerShell:
 
 ```powershell
 $env:RUN_DEVICE_TESTS="1"
-python scripts/run_suite.py --device --no-api
+python scripts/run_suite.py --device --no-api --outputdir reports/device_run
 ```
 
 Atualização de APK (evidência de install/update):
@@ -121,7 +125,7 @@ python scripts/device_upgrade_check.py --old device/apps/<antigo>.apk --new devi
 ```
 
 O script instala a versão antiga, abre o app, instala a nova com `adb install -r`, verifica se o processo
-continua vivo e salva `reports/device/upgrade-check.txt` e o `logcat`.
+continua vivo e salva `reports/device/upgrade-check.txt` e o `logcat`. Ele ainda não foi executado.
 
 ## Estrutura
 

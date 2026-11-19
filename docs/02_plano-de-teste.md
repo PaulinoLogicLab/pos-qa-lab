@@ -103,5 +103,5 @@ caso são registrados como lacuna.
 | 7 | Device suite e script de upgrade |
 | 8 | Relatórios, matriz, limitações e README |
 
-O núcleo e o ISO foram executados em 19/11/2026. O device suite foi implementado, mas não executado
-neste ambiente por ausência de emulador/Appium.
+O núcleo e o ISO foram executados em 19/11/2026. O device suite foi executado no mesmo dia em
+emulador Android 16 (5/5); o script de atualização de APK ainda não foi executado.

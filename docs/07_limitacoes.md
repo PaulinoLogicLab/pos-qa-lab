@@ -21,8 +21,8 @@ Este documento existe para evitar que o laboratório seja lido como algo que ele
 - Impressora térmica, câmera, GPS e periféricos de POS.
 - Atualização de firmware do terminal.
 - Carga, estabilidade prolongada, segurança ofensiva e acessibilidade.
-- A suíte de dispositivo **não foi executada** neste ambiente; ela está implementada e depende de
-  Android/Appium.
+- A suíte de dispositivo foi executada em **emulador Android**, não em dispositivo físico ou POS real.
+- O script de atualização de APK está implementado, mas ainda não foi executado.
 
 ## 3. O que o device suite cobre
 
@@ -34,7 +34,8 @@ O app público Sauce Labs My Demo App permite:
 - background/foreground;
 - coleta de `logcat`.
 
-Ele **não** permite testar impressão térmica, offline de POS ou periféricos. Esses temas ficam no
+A suíte foi executada em emulador `Pixel_8_Pro` (Android 16 / API 36) com 5/5 aprovados.
+Ela **não** permite testar impressão térmica, offline de POS ou periféricos. Esses temas ficam no
 simulador de terminal e na experiência profissional da autora, não neste repositório.
 
 ## 4. O que o ISO 8583 cobre
@@ -52,11 +53,11 @@ simulador de terminal e na experiência profissional da autora, não neste repos
 - “Implementei ISO 8583 de produção.”
 - “Fiz certificação EMV/PCI PTS.”
 - “Validei impressão térmica neste projeto.”
-- “O device suite passou” — ele ainda não foi executado.
+- “O device suite passou em POS físico” — ele passou em emulador Android, não em POS real.
 
 ## 6. Evoluções possíveis
 
-1. Rodar o device suite em emulador e anexar evidências.
+1. Rodar o device suite em dispositivo físico e o script de upgrade de APK.
 2. Adicionar mutation testing no mock para medir a efetividade dos casos.
 3. Adicionar property-based testing no parser ISO.
 4. Adicionar k6 para carga e estabilidade.

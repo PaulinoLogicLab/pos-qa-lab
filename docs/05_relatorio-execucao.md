@@ -5,7 +5,8 @@
 **Ambiente:** Windows, Python 3.13.14
 **API:** FastAPI 0.165.0 + Uvicorn 0.54.0 + SQLite
 **Robot Framework:** 7.5.1
-**Comando:** `python scripts/run_suite.py --exclude device`
+**Comando (núcleo/ISO):** `python scripts/run_suite.py --exclude device`
+**Comando (device):** `RUN_DEVICE_TESTS=1 python scripts/run_suite.py --device --no-api --outputdir reports/device_run`
 
 **CI:** GitHub Actions `robot-core` em Ubuntu + Python 3.12, execução 18/18 aprovada em 19/11/2026
 (run `44536411506`).
@@ -14,14 +15,14 @@
 
 | Métrica | Valor |
 |---|---:|
-| Casos Robot | 18 |
-| Aprovados | 18 |
+| Casos Robot executados | 23 |
+| Aprovados | 23 |
 | Reprovados | 0 |
 | Ignorados | 0 |
-| Tempo somado dos casos | 0,64 s |
+| Tempo | 0,64 s (núcleo/ISO) + 104,69 s (device) |
 | Testes unitários Python | 25 aprovados |
-| Suítes | 5 |
-| Casos de dispositivo | 5 implementados, não executados |
+| Suítes | 6 (5 de núcleo/ISO + 1 de device) |
+| Casos de dispositivo | 5/5 aprovados em emulador |
 
 ## 2. Resultado por suíte
 
@@ -32,6 +33,7 @@
 | 03 Resilience | 4 | 4 | 0 | 0,183 s |
 | 04 Contracts Observability | 3 | 3 | 0 | 0,133 s |
 | 06 ISO 8583 Lab | 5 | 5 | 0 | 0,016 s |
+| 05 Device Smoke (emulador) | 5 | 5 | 0 | 104,689 s |
 
 ## 3. Cobertura de estados
 
@@ -56,13 +58,17 @@ o parser ISO 8583 e a fila offline do terminal.
 
 ## 5. Dispositivo
 
-A suíte `robot/device/05_device_smoke.robot` tem 5 casos implementados para o Sauce Labs My Demo App:
+A suíte `robot/device/05_device_smoke.robot` tem 5 casos para o Sauce Labs My Demo App:
 login válido, validação sem credenciais, usuário bloqueado, carrinho e background/foreground.
 
-**Dry-run:** 5/5 casos passaram na validação de keywords e argumentos em 19/11/2026.
-**Execução real:** ignorada (`SKIP`) por ausência de `RUN_DEVICE_TESTS=1` e Appium/emulador neste ambiente.
+**Execução real:** **5/5 aprovados** em 19/11/2026.
+**Ambiente:** emulador `Pixel_8_Pro` (`sdk_gphone64_x86_64`), Android 16 / API 36, x86_64,
+My Demo App 2.3.0, Appium 3.5.0 e UiAutomator2 7.0.0.
+**Tempo:** 104,69 s.
+**Evidência:** `reports/device_run/report.html`, `log.html`, `output.xml` e `summary.json`.
+
 O script `scripts/device_upgrade_check.py` implementa a evidência de instalação + atualização por
-`adb install -r` e coleta de `logcat`; também não foi executado.
+`adb install -r` e coleta de `logcat`; ele ainda não foi executado.
 
 ## 6. Defeitos e achados
 
@@ -72,6 +78,8 @@ O script `scripts/device_upgrade_check.py` implementa a evidência de instalaç�
 | DEF-LAB-002 | `POST /terminals/{id}/sync` aceitava transação de outro terminal | Média | Corrigido |
 | DEF-LAB-004 | Fila offline falhava no Linux no CI por caminho sem separador | Média | Corrigido |
 | FIND-LAB-003 | Nome `Get Payment` ambíguo em três libraries Robot | Baixa | Corrigido |
+| FIND-LAB-005 | Activity relativa não abria o app no Appium; faltava `udid` e nome completo | Baixa | Corrigido |
+| FIND-LAB-006 | CT-DEV-04 clicava no container não clicável e no botão de adicionar, não no ícone do carrinho | Baixa | Corrigido |
 
 Detalhes no [relatório de defeitos](06_relatorio-defeitos.md).
 
@@ -82,12 +90,16 @@ Detalhes no [relatório de defeitos](06_relatorio-defeitos.md).
 - `reports/robot/output.xml`
 - `reports/robot/summary.json`
 - `reports/robot/api.log`
-- `reports/logcat/` (quando o device suite for executado)
+- `reports/device_run/report.html`
+- `reports/device_run/log.html`
+- `reports/device_run/output.xml`
+- `reports/device_run/summary.json`
+- `reports/logcat/` (quando houver falha de device)
 
 ## 8. Observações e limites
 
-- O tempo de 0,64 s é a soma dos casos, não o tempo de parede do runner.
+- Os 0,64 s são a soma dos casos de núcleo/ISO; o device suite levou 104,69 s.
 - A API é local e simulada; não há latência de rede real.
 - O ISO 8583 é um laboratório de formato, não uma implementação de produção.
-- A primeira execução teve 9 falhas causadas por `DEF-LAB-001`; após a correção, 18/18 passaram.
-- O device suite precisa ser executado em ambiente com Android/Appium antes de ser declarado aprovado.
+- A primeira execução do núcleo teve 9 falhas causadas por `DEF-LAB-001`; após a correção, 18/18 passaram.
+- O device suite foi executado em emulador, não em dispositivo físico/POS.
