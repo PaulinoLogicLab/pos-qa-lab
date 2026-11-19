@@ -51,7 +51,7 @@ Demonstrar, com código e evidência:
 
 - O ambiente de execução tem Python 3.11+ e acesso local à porta 8000.
 - O device suite depende de Android SDK, emulador/dispositivo, Appium 2 e `UiAutomator2`.
-- O app público usado é o **Sauce Labs My Demo App**; não há afiliação com a Stone.
+- O app público usado é o **Sauce Labs My Demo App**; não há afiliação com empresas do setor.
 - O repositório é público; nenhum APK, segredo ou dado interno é versionado.
 
 ## 6. Riscos

@@ -6,7 +6,7 @@
 **Responsável:** Emanuelle Gonçalves Paulino
 
 > Este laboratório não representa um produto real. Os defeitos abaixo são do mock, do runner ou da
-> arquitetura de testes; não são achados de produção da Stone ou de qualquer adquirente.
+> arquitetura de testes; não são achados de produção de nenhum adquirente.
 
 ## Resumo
 

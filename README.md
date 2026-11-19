@@ -9,7 +9,7 @@ O objetivo é exercitar, com evidência, o tipo de falha que aparece em POS: tim
 idempotência, cancelamento, estorno, parcelamento, reinício e atualização de aplicativo.
 
 > **Escopo e honestidade:** este projeto é um laboratório. Não é um POS real, não se conecta a adquirente,
-> não implementa EMV, ISO 8583 de produção ou PCI PTS e não tem afiliação com a Stone. Os dados são sintéticos.
+> não implementa EMV, ISO 8583 de produção ou PCI PTS. Os dados são sintéticos.
 
 ## Resultado atual
 
