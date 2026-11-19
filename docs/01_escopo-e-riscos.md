@@ -3,7 +3,7 @@
 **Projeto:** POS QA Lab — Robot Framework + Python
 **Responsável:** Emanuelle Gonçalves Paulino
 **Data:** 19/11/2026
-**Versão:** 0.6.0
+**Versão:** 1.0.0
 
 ## 1. Contexto
 

@@ -1,7 +1,7 @@
 # 02 — Plano de teste
 
 **Projeto:** POS QA Lab
-**Versão:** 0.6.0
+**Versão:** 1.0.0
 **Data:** 19/11/2026
 
 ## 1. Estratégia

@@ -44,7 +44,7 @@ if not logger.handlers:
 
 app = FastAPI(
     title="POS QA Lab - Simulated Payment API",
-    version="0.6.0",
+    version="1.0.0",
     description=(
         "API de laboratorio para jornadas de pagamento. Nao e um adquirente real, "
         "nao implementa EMV, ISO 8583 de producao ou PCI PTS."

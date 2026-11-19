@@ -1,7 +1,7 @@
 PYTHON ?= python
 COMPOSE ?= docker compose
 
-.PHONY: install lint unit robot parallel device perf test up down logs docker-test clean
+.PHONY: install lint unit robot parallel device perf test release-check package up down logs docker-test clean
 
 install:
 	$(PYTHON) -m pip install -r requirements.txt
@@ -27,6 +27,12 @@ perf:
 	$(COMPOSE) --profile perf run --rm k6
 
 test: lint unit robot
+
+release-check:
+	$(PYTHON) scripts/release_check.py
+
+package:
+	./scripts/collect_logs.sh
 
 up:
 	$(COMPOSE) up -d api

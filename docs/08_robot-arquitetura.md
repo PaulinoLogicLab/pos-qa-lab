@@ -1,7 +1,7 @@
 # 08 — Arquitetura Robot de produção
 
 **Projeto:** POS QA Lab
-**Versão:** 0.6.0
+**Versão:** 1.0.0
 **Data:** 19/11/2026
 
 ## 1. Camadas
