@@ -27,6 +27,7 @@
 | k6 | 436 requisições, 0% falha, p95 77,50 ms |
 | Suítes | 11 (10 de núcleo/ISO/hardware + 1 de device) |
 | Casos de dispositivo | 5/5 aprovados em emulador |
+| Release check | 9/9 verificações |
 
 ## 2. Resultado por suíte
 
@@ -140,6 +141,7 @@ O script `scripts/device_upgrade_check.py` implementa a evidência de instalaç�
 | FIND-LAB-011 | Runner local podia se conectar à API do Docker na mesma porta e ler banco diferente | Média | Corrigido |
 | FIND-LAB-012 | `Sale With Pinpad` sobrescrevia o status da impressora para OK | Baixa | Corrigido |
 | FIND-LAB-013 | Bind mount `./reports` sem permissão para o usuário `app` no CI | Média | Corrigido |
+| FIND-LAB-014 | Scripts shell checkoutados com CRLF quebravam no Git Bash | Baixa | Corrigido |
 
 Detalhes no [relatório de defeitos](06_relatorio-defeitos.md).
 

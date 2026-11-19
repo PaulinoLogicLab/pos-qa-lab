@@ -24,7 +24,8 @@ idempotência, cancelamento, estorno, parcelamento, reinício e atualização de
 | Cobertura de linhas | **88,9%** |
 | k6 | **436 req, 0% falha, p95 77,50 ms** |
 | Casos de dispositivo | **5/5 aprovados em emulador Android 16** |
-| Defeitos do laboratório corrigidos | **3** (+10 achados de automação/implementação) |
+| Release check | **9/9** |
+| Defeitos do laboratório corrigidos | **3** (+11 achados de automação/implementação) |
 | CI | **44/44 em Python 3.11, 3.12 e 3.13 + Docker + k6** |
 
 Detalhes em [relatório de execução](docs/05_relatorio-execucao.md) e [relatório de defeitos](docs/06_relatorio-defeitos.md).
@@ -144,6 +145,17 @@ O profile `parallel` roda a suíte com Pabot dentro do container.
 
 Guia completo: [runbook Linux](docs/09_runbook-linux.md).
 
+## Homologação
+
+O pacote de homologação registra **GO para o laboratório** e **NO-GO para produção** (sem POS real,
+EMV, PCI PTS ou adquirente). Veja [docs/12_homologacao.md](docs/12_homologacao.md).
+
+Antes de publicar uma release:
+
+```bash
+python scripts/release_check.py
+```
+
 ## Device suite
 
 **Resultado:** 5/5 aprovados em 19/11/2026 no emulador `Pixel_8_Pro`
@@ -211,6 +223,7 @@ pos-qa-lab/
 - [Runbook Linux](docs/09_runbook-linux.md)
 - [Hardware e periféricos](docs/10_hardware-perifericos.md)
 - [Métricas de qualidade](docs/11_metricas-qualidade.md)
+- [Pacote de homologação](docs/12_homologacao.md)
 
 ## Licença
 

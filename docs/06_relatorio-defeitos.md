@@ -25,10 +25,11 @@
 | FIND-LAB-011 | Runner local podia usar a API do Docker e ler banco diferente | Média | Corrigido |
 | FIND-LAB-012 | Workflow de hardware sobrescrevia o status da impressora para OK | Baixa | Corrigido |
 | FIND-LAB-013 | Bind mount de relatórios sem permissão no CI | Média | Corrigido |
+| FIND-LAB-014 | Scripts shell com CRLF quebravam no Git Bash | Baixa | Corrigido |
 
 - Defeitos de produto/mock: **1** (DEF-LAB-002).
 - Defeitos de infraestrutura de teste: **2** (DEF-LAB-001 e DEF-LAB-004).
-- Achados de automação/implementação: **10** (FIND-LAB-003, 005, 006, 007, 008, 009, 010, 011, 012 e 013).
+- Achados de automação/implementação: **11** (FIND-LAB-003, 005, 006, 007, 008, 009, 010, 011, 012, 013 e 014).
 
 ## DEF-LAB-001 — Runner bloqueava a API
 
@@ -268,6 +269,21 @@ rodava como `app`, sem permissão de escrita.
 documenta o requisito e a alternativa com volume nomeado.
 
 **Reteste:** job Docker verde; 44/44 no container.
+
+## FIND-LAB-014 — Scripts shell com CRLF
+
+| Campo | Conteúdo |
+|---|---|
+| Severidade | Baixa |
+| Status | Corrigido |
+| Tipo | Line endings |
+| Evidência | `set: pipefail: invalid option name` no Git Bash |
+
+**Sintoma:** os scripts `.sh` eram checkoutados com CRLF no Windows e falhavam no `bash`.
+
+**Correção:** `.gitattributes` com `*.sh text eol=lf` e normalização dos arquivos.
+
+**Reteste:** `bash -n` nos três scripts e `collect_logs.sh` gerando o pacote de evidências.
 
 ## Lições
 

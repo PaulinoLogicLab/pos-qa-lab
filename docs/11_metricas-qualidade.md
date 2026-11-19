@@ -1,7 +1,7 @@
 # 11 — Métricas de qualidade
 
 **Projeto:** POS QA Lab
-**Versão:** 0.6.0
+**Versão:** 1.0.0
 **Data:** 19/11/2026
 
 ## 1. Resultado atual
@@ -20,6 +20,7 @@
 | k6 — p95 | **77,50 ms** |
 | Pabot | 44/44 em 4 processos |
 | Docker Compose | 44/44 |
+| Release check | 9/9 |
 
 ## 2. Cobertura por módulo
 

@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.0.0 — 19/11/2026
+
+### Added
+
+- Pacote de homologação (`docs/12_homologacao.md`) com checklist, matriz de evidências,
+  critérios de go/no-go, aceite de fornecedor e riscos residuais.
+- Script `scripts/release_check.py` com gate de versão, arquivos, resumos, segredos e APKs.
+- Alvos `make release-check` e `make package`.
+- Release de portfólio: **GO para laboratório, NO-GO para produção**.
+
+### Changed
+
+- Versão do projeto e da API para `1.0.0`.
+- Documentação final consolidada: 49 casos, 52 testes unitários, cobertura 88,9%,
+  k6 436 requisições com p95 77,50 ms.
+
 ## 0.6.0 — 19/11/2026
 
 ### Added
