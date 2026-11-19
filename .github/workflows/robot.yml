@@ -20,11 +20,12 @@ jobs:
       - name: Lint
         run: ruff check .
       - name: Unit tests
-        run: pytest
+        run: python -m pytest
       - name: Robot core and ISO lab
         run: python scripts/run_suite.py --exclude device
       - name: Summarize results
         if: always()
+        continue-on-error: true
         run: python scripts/summarize_results.py
       - name: Upload Robot reports
         if: always()
