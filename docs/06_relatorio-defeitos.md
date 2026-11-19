@@ -14,10 +14,11 @@
 |---|---|---|---|
 | DEF-LAB-001 | Runner bloqueava a API por não drenar o `stdout` | Média | Corrigido |
 | DEF-LAB-002 | Sync aceitava transação de outro terminal | Média | Corrigido |
+| DEF-LAB-004 | Fila offline falhava no Linux por caminho sem separador | Média | Corrigido |
 | FIND-LAB-003 | Nome de keyword ambíguo em três libraries | Baixa | Corrigido |
 
 - Defeitos de produto/mock: **1** (DEF-LAB-002).
-- Defeitos de infraestrutura de teste: **1** (DEF-LAB-001).
+- Defeitos de infraestrutura de teste: **2** (DEF-LAB-001 e DEF-LAB-004).
 - Achado de automação: **1** (FIND-LAB-003).
 
 ## DEF-LAB-001 — Runner bloqueava a API
@@ -68,6 +69,29 @@ bloqueado ao tentar escrever log.
 **Correção:** validação no `sync_transactions`, retornando `TERMINAL_MISMATCH` e nenhum registro.
 
 **Reteste:** CT-CON-02 aprovado; teste unitário confirma `count=0` para a chave enviada.
+
+## DEF-LAB-004 — Fila offline falhava no Linux
+
+| Campo | Conteúdo |
+|---|---|
+| Severidade | Média |
+| Status | Corrigido |
+| Ambiente | GitHub Actions, Ubuntu, Python 3.12 |
+| Evidência | Run 44535925803: CT-RES-03 e CT-RES-04 com `OperationalError: unable to open database file` |
+
+**Passos para reproduzir:**
+
+1. Executar `CT-RES-03` ou `CT-RES-04` no Linux.
+2. Observar a criação do caminho da fila offline.
+3. Tentar abrir o SQLite.
+
+**Esperado:** arquivo criado em `${TEMPDIR}/terminal_<key>.db`.
+**Observado:** o caminho era montado como `${TEMPDIR}terminal_<key>.db`; no Windows `${TEMPDIR}` termina com
+barra, no Linux não, gerando `/tmpterminal_<key>.db` e falha ao abrir o banco.
+
+**Correção:** usar `Join Path    ${TEMPDIR}    terminal_${key}.db`.
+
+**Reteste:** 18/18 no Windows e reexecução do CI no Linux.
 
 ## FIND-LAB-003 — Keyword `Get Payment` ambígua
 

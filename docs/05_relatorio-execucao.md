@@ -67,6 +67,7 @@ O script `scripts/device_upgrade_check.py` implementa a evidência de instalaç�
 |---|---|---|---|
 | DEF-LAB-001 | Runner bloqueava a API ao não drenar o `stdout`; após alguns casos, o servidor parava de responder | Média | Corrigido |
 | DEF-LAB-002 | `POST /terminals/{id}/sync` aceitava transação de outro terminal | Média | Corrigido |
+| DEF-LAB-004 | Fila offline falhava no Linux no CI por caminho sem separador | Média | Corrigido |
 | FIND-LAB-003 | Nome `Get Payment` ambíguo em três libraries Robot | Baixa | Corrigido |
 
 Detalhes no [relatório de defeitos](06_relatorio-defeitos.md).

@@ -34,7 +34,7 @@ CT-RES-03 Fila offline sincroniza quando a conexao volta
     [Documentation]    A venda fica na fila local; o sync cria a transacao e uma segunda sincronizacao nao duplica.
     [Tags]    critical
     ${key}=    Generate Idempotency Key
-    ${db}=    Set Variable    ${TEMPDIR}terminal_${key}.db
+    ${db}=    Join Path    ${TEMPDIR}    terminal_${key}.db
     Use Terminal    TERM9101    ${db}
     Go Offline
     ${sale}=    Start Sale    25.00    idempotency_key=${key}
@@ -58,7 +58,7 @@ CT-RES-04 Reinicio do terminal preserva a fila offline
     [Documentation]    A fila sobrevive ao reinicio do simulador; o sync seguinte conclui a venda.
     [Tags]    critical
     ${key}=    Generate Idempotency Key
-    ${db}=    Set Variable    ${TEMPDIR}terminal_${key}.db
+    ${db}=    Join Path    ${TEMPDIR}    terminal_${key}.db
     Use Terminal    TERM9102    ${db}
     Go Offline
     ${sale}=    Start Sale    30.00    idempotency_key=${key}

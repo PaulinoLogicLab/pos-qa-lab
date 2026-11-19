@@ -17,7 +17,7 @@ idempotência, cancelamento, estorno, parcelamento, reinício e atualização de
 | Tempo somado dos casos | **0,64 s** |
 | Testes unitários Python | **25 aprovados** |
 | Casos de dispositivo implementados | **5** (não executados neste ambiente) |
-| Defeitos do laboratório corrigidos | **2** (+1 achado de automação) |
+| Defeitos do laboratório corrigidos | **3** (+1 achado de automação) |
 
 Detalhes em [relatório de execução](docs/05_relatorio-execucao.md) e [relatório de defeitos](docs/06_relatorio-defeitos.md).
 
