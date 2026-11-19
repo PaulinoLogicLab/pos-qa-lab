@@ -1,7 +1,7 @@
 # 02 — Plano de teste
 
 **Projeto:** POS QA Lab
-**Versão:** 0.4.0
+**Versão:** 0.5.0
 **Data:** 19/11/2026
 
 ## 1. Estratégia
@@ -15,6 +15,7 @@ Teste baseado em risco, com foco nas falhas que mais impactam uma jornada de pag
 4. **Formato**: parsing e fluxo ISO 8583 com dados sintéticos.
 5. **Dispositivo**: instalação, atualização, login e navegação no app público.
 6. **Escala e evidência**: data-driven, Pabot e listener JSONL por caso.
+7. **Hardware**: impressora, pinpad, reboot, firmware e configuração simulados.
 
 ## 2. Níveis e tipos
 
@@ -58,7 +59,7 @@ Teste baseado em risco, com foco nas falhas que mais impactam uma jornada de pag
 ## 6. Critérios de saída
 
 - 100% dos casos do núcleo e ISO executados.
-- 37/37 casos de núcleo/ISO aprovados.
+- 44/44 casos de núcleo/ISO/hardware aprovados.
 - Nenhuma falha aberta no núcleo.
 - Relatório e resumo gerados.
 - Defeitos encontrados com evidência e status.
@@ -119,7 +120,8 @@ caso são registrados como lacuna.
 | 5 | Resiliência, concorrência, contratos e observabilidade |
 | 6 | ISO 8583: parser e fluxo de mensagens |
 | 7 | Device suite e script de upgrade |
-| 8 | Relatórios, matriz, limitações e README |
+| 8 | Hardware simulado: impressora, pinpad, reboot e firmware |
+| 9 | Relatórios, matriz, limitações e README |
 
 O núcleo e o ISO foram executados em 19/11/2026. O device suite foi executado no mesmo dia em
 emulador Android 16 (5/5); o script de atualização de APK ainda não foi executado.

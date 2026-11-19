@@ -8,37 +8,38 @@
 **Comando (núcleo/ISO):** `python scripts/run_suite.py --exclude device`
 **Comando (device):** `RUN_DEVICE_TESTS=1 python scripts/run_suite.py --device --no-api --outputdir reports/device_run`
 
-**CI:** GitHub Actions `robot-core` em Ubuntu + Python 3.11/3.12/3.13, execução 37/37 aprovada em
-19/11/2026; Pabot 37/37 na versão 3.12; job Docker separado.
+**CI:** GitHub Actions `robot-core` em Ubuntu + Python 3.11/3.12/3.13, execução 44/44 aprovada em
+19/11/2026; Pabot 44/44 na versão 3.12; job Docker separado.
 
 ## 1. Resumo
 
 | Métrica | Valor |
 |---|---:|
-| Casos Robot executados | 42 |
-| Aprovados | 42 |
+| Casos Robot executados | 49 |
+| Aprovados | 49 |
 | Reprovados | 0 |
 | Ignorados | 0 |
-| Tempo | 4,24 s (núcleo/ISO) + 104,69 s (device) |
-| Execução paralela | 37/37 em 4 processos Pabot |
-| Docker Compose | 37/37 no container Linux |
-| Testes unitários Python | 39 aprovados |
-| Suítes | 10 (9 de núcleo/ISO + 1 de device) |
+| Tempo | 3,89 s (núcleo/ISO/hardware) + 104,69 s (device) |
+| Execução paralela | 44/44 em 4 processos Pabot |
+| Docker Compose | 44/44 no container Linux |
+| Testes unitários Python | 45 aprovados |
+| Suítes | 11 (10 de núcleo/ISO/hardware + 1 de device) |
 | Casos de dispositivo | 5/5 aprovados em emulador |
 
 ## 2. Resultado por suíte
 
 | Suíte | Casos | Aprovados | Reprovados | Tempo |
 |---|---:|---:|---:|---:|
-| 01 Sales | 3 | 3 | 0 | 0,097 s |
-| 02 Cancellation Refund | 3 | 3 | 0 | 0,261 s |
-| 03 Resilience | 4 | 4 | 0 | 0,254 s |
+| 01 Sales | 3 | 3 | 0 | 0,077 s |
+| 02 Cancellation Refund | 3 | 3 | 0 | 0,123 s |
+| 03 Resilience | 4 | 4 | 0 | 0,176 s |
 | 04 Contracts Observability | 3 | 3 | 0 | 0,081 s |
-| 05 Capture Settlement | 6 | 6 | 0 | 0,772 s |
-| 06 ISO 8583 Lab | 5 | 5 | 0 | 0,032 s |
-| 07 Concurrency Faults | 2 | 2 | 0 | 2,612 s |
-| 08 ISO 8583 Flow | 6 | 6 | 0 | 0,056 s |
-| 09 Data Driven Sales | 5 | 5 | 0 | 0,080 s |
+| 05 Capture Settlement | 6 | 6 | 0 | 0,279 s |
+| 06 ISO 8583 Lab | 5 | 5 | 0 | 0,061 s |
+| 07 Concurrency Faults | 2 | 2 | 0 | 2,647 s |
+| 08 ISO 8583 Flow | 6 | 6 | 0 | 0,115 s |
+| 09 Data Driven Sales | 5 | 5 | 0 | 0,077 s |
+| 10 Hardware Peripherals | 7 | 7 | 0 | 0,258 s |
 | Device 05 Device Smoke (emulador) | 5 | 5 | 0 | 104,689 s |
 
 ### 2.1 Execução paralela com Pabot
@@ -46,9 +47,9 @@
 | Métrica | Valor |
 |---|---:|
 | Processos | 4 |
-| Casos | 37/37 |
-| Soma dos casos | 3,96 s |
-| Tempo de parede | 7,84 s |
+| Casos | 44/44 |
+| Soma dos casos | 4,13 s |
+| Tempo de parede | 8,00 s |
 | Evidência | `reports/pabot/report.html` e `reports/pabot/summary.json` |
 
 ### 2.2 Docker Compose
@@ -56,9 +57,9 @@
 | Métrica | Valor |
 |---|---:|
 | Serviços | `api` + `tests` |
-| Casos | 37/37 |
+| Casos | 44/44 |
 | Resultado | containers encerrados com código 0 |
-| Profile `parallel` | 37/37 em 4 processos |
+| Profile `parallel` | 44/44 em 4 processos |
 | Evidência | `reports/robot/report.html` montado do container |
 
 ## 3. Cobertura de estados
@@ -83,8 +84,9 @@ Transições exercitadas:
 
 ## 4. Testes unitários
 
-`pytest`: **39 aprovados**. Cobrem a API (contratos, idempotência, transições, timeout, concorrência,
-captura, liquidação, correlação e sync), o parser/fluxo ISO 8583 e a fila offline do terminal.
+`pytest`: **45 aprovados**. Cobrem a API (contratos, idempotência, transições, timeout, concorrência,
+captura, liquidação, correlação e sync), o parser/fluxo ISO 8583, a fila offline e os periféricos
+simulados.
 
 ## 5. Dispositivo
 
@@ -115,6 +117,8 @@ O script `scripts/device_upgrade_check.py` implementa a evidência de instalaç�
 | FIND-LAB-009 | Pabot não encontrava o executável `robot` no PATH do venv | Baixa | Corrigido |
 | FIND-LAB-010 | Listener usava `data.starttime`, atributo inexistente no Robot 7 | Baixa | Corrigido |
 | FIND-LAB-011 | Runner local podia se conectar à API do Docker na mesma porta e ler banco diferente | Média | Corrigido |
+| FIND-LAB-012 | `Sale With Pinpad` sobrescrevia o status da impressora para OK | Baixa | Corrigido |
+| FIND-LAB-013 | Bind mount `./reports` sem permissão para o usuário `app` no CI | Média | Corrigido |
 
 Detalhes no [relatório de defeitos](06_relatorio-defeitos.md).
 
@@ -142,8 +146,8 @@ Detalhes no [relatório de defeitos](06_relatorio-defeitos.md).
 
 ## 8. Observações e limites
 
-- Os 4,24 s são a soma dos casos de núcleo/ISO; o device suite levou 104,69 s.
-- O Pabot executa os mesmos 37 casos em 4 processos; o tempo de parede foi 7,84 s.
+- Os 3,89 s são a soma dos casos de núcleo/ISO/hardware; o device suite levou 104,69 s.
+- O Pabot executa os mesmos 44 casos em 4 processos; o tempo de parede foi 8,00 s.
 - A concorrência usa 10 threads e uma barreira; o timeout usa atraso de 1,5 s e cliente de 0,5 s.
 - A API é local e simulada; não há latência de rede real.
 - O ISO 8583 é um laboratório de formato, não uma implementação de produção.

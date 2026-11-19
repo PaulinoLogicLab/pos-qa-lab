@@ -1,7 +1,7 @@
 # 08 — Arquitetura Robot de produção
 
 **Projeto:** POS QA Lab
-**Versão:** 0.4.0
+**Versão:** 0.5.0
 **Data:** 19/11/2026
 
 ## 1. Camadas
@@ -54,11 +54,11 @@ Adicionar um novo valor é adicionar uma linha, não duplicar um caso inteiro.
 python scripts/run_parallel.py --processes 4
 ```
 
-- 37 casos em 4 processos.
+- 44 casos em 4 processos.
 - `PABOTQUEUEINDEX` fica disponível para isolar massa, se necessário.
 - Suítes que compartilham estado devem ser marcadas `serial`; a suíte de liquidação já usa terminais
   únicos por caso.
-- O tempo de parede foi 7,84 s; a soma dos casos foi 3,96 s. Em suítes curtas, o overhead do Pabot
+- O tempo de parede foi 8,00 s; a soma dos casos foi 4,13 s. Em suítes curtas, o overhead do Pabot
   supera o ganho — o valor aqui é a capacidade de escalar.
 
 ## 5. Listener de evidência
@@ -72,7 +72,13 @@ python scripts/run_parallel.py --processes 4
 Arquivos: `reports/robot/evidence/events-<pid>.jsonl` e `reports/pabot/evidence/events-<pid>.jsonl`.
 O runner limpa evidências antigas antes de cada execução.
 
-## 6. Tags
+## 6. Hardware simulado
+
+A suíte `10_hardware_peripherals.robot` usa a library `Hardware.py`, que compõe `TerminalSimulator`,
+`Printer`, `Pinpad` e `TerminalLifecycle`. São modelos determinísticos, não drivers reais. Detalhes em
+[10_hardware-perifericos.md](10_hardware-perifericos.md).
+
+## 7. Tags
 
 | Tag | Uso |
 |---|---|
@@ -87,7 +93,7 @@ O runner limpa evidências antigas antes de cada execução.
 | `data_driven` | template de vendas |
 | `device` | Appium, executado à parte |
 
-## 7. CI matrix
+## 8. CI matrix
 
 O workflow `robot-core` roda em Python 3.11, 3.12 e 3.13:
 
@@ -97,7 +103,7 @@ O workflow `robot-core` roda em Python 3.11, 3.12 e 3.13:
 4. `python scripts/run_parallel.py --processes 4` (somente 3.12)
 5. resumo e artifact dos relatórios
 
-## 8. Decisões
+## 9. Decisões
 
 - **Library Python para negócio:** evita suites gigantes e mantém asserções testáveis.
 - **Template nativo do Robot:** sem dependência extra para data-driven.
@@ -106,7 +112,7 @@ O workflow `robot-core` roda em Python 3.11, 3.12 e 3.13:
 - **API compartilhada no Pabot:** chaves e terminais únicos por caso; liquidação e cenários de estado
   devem permanecer serializados.
 
-## 9. Limitações
+## 10. Limitações
 
 - O Pabot não isola banco por worker; a massa é isolada por chave/terminal.
 - O listener registra ciclo de vida e status, não request/response HTTP completos.

@@ -28,6 +28,9 @@
 | RF-19 | Latência/timeout e retry | CT-RES-06 | `simulate_delay_ms`, timeout e retry | Coberto |
 | RF-20 | Fluxo ISO 8583 de autorização, reversão e rede | CT-ISO-06 a CT-ISO-11 | `iso8583_lab/acquirer.py` | Coberto |
 | RF-21 | Cobertura data-driven de valores, parcelas e recusa | CT-DD-01 a CT-DD-05 | `SalesWorkflow.py`, template Robot | Coberto |
+| RF-22 | Impressora: papel, offline e reimpressão | CT-HW-01, CT-HW-02, CT-HW-03 | `Printer`, contadores e recibos | Coberto |
+| RF-23 | Pinpad: timeout e cancelamento | CT-HW-04, CT-HW-05 | `Pinpad`, ausência de pagamento | Coberto |
+| RF-24 | Reboot e atualização preservam fila | CT-HW-06, CT-HW-07 | `TerminalLifecycle`, `offline_queue` | Coberto |
 
 ## 2. Requisitos não funcionais
 
@@ -44,11 +47,11 @@
 
 | Métrica | Valor |
 |---|---:|
-| Requisitos funcionais | 21 |
+| Requisitos funcionais | 24 |
 | Requisitos não funcionais | 6 |
-| Casos de núcleo/ISO executados | 37 |
+| Casos de núcleo/ISO/hardware executados | 44 |
 | Casos de dispositivo executados | 5 |
-| Casos executados com requisito mapeado | 42/42 |
+| Casos executados com requisito mapeado | 49/49 |
 | Casos de dispositivo com requisito mapeado | 5/5 |
 
 ## 4. Lacunas declaradas
@@ -56,6 +59,7 @@
 - O device suite foi executado em emulador, não em dispositivo físico/POS.
 - O script de atualização de APK está implementado, mas ainda não executado.
 - O fluxo ISO 8583 é em memória, sem socket, BCD, MAC ou rede real.
+- Impressora, pinpad e firmware são simulados; não há hardware real.
 - A liquidação é um snapshot; estorno posterior não recalcula o lote.
 - A captura parcial não libera o saldo restante da autorização.
 - Não há requisito de impressão térmica, pinpad, EMV, PCI PTS ou certificação de bandeira.

@@ -3,10 +3,10 @@
 ## Núcleo + ISO 8583
 
 - **Comando:** `python scripts/run_suite.py --exclude device`
-- **Resultado:** 37/37 aprovados, 0 falhas, 4,24 s
+- **Resultado:** 44/44 aprovados, 0 falhas, 3,89 s
 - **Cobertura:** venda, cancelamento/estorno, captura, liquidação, resiliência, concorrência,
-  contratos, data-driven e ISO 8583 (parser e fluxo).
-- **Paralelo:** 37/37 em 4 processos Pabot (tempo de parede 7,84 s).
+  contratos, data-driven, hardware simulado e ISO 8583 (parser e fluxo).
+- **Paralelo:** 44/44 em 4 processos Pabot (tempo de parede 8,00 s).
 - **Resumo:** [core-2026-11-19/summary.json](core-2026-11-19/summary.json)
 - **Pabot:** [pabot-2026-11-19/summary.json](pabot-2026-11-19/summary.json)
 - **Relatórios completos:** gerados localmente em `reports/robot/` e `reports/pabot/`, publicados

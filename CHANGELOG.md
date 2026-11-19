@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.5.0 — 19/11/2026
+
+### Added
+
+- Simuladores de impressora (`OK`, `PAPER_OUT`, `OFFLINE`), pinpad (`OK`, `TIMEOUT`, `CANCELLED`,
+  `DISCONNECTED`) e ciclo do terminal (`reboot`, firmware, configuração).
+- Library `Hardware.py` com `Sale With Pinpad`, `Reboot Terminal`, `Update Firmware` e reimpressão.
+- Suíte `10_hardware_peripherals` com 7 casos.
+- Testes unitários dos periféricos.
+- Documento `docs/10_hardware-perifericos.md`.
+
+### Fixed
+
+- `FIND-LAB-012`: o workflow de hardware sobrescrevia o status da impressora para `OK`.
+- `FIND-LAB-013`: bind mount de relatórios sem permissão no job Docker do CI.
+
 ## 0.4.0 — 19/11/2026
 
 ### Added
