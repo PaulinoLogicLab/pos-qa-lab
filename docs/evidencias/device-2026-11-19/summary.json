@@ -1,0 +1,44 @@
+{
+  "total": 5,
+  "passed": 5,
+  "failed": 0,
+  "skipped": 0,
+  "elapsed_seconds": 104.69,
+  "suites": [
+    {
+      "name": "05 Device Smoke",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "elapsed_seconds": 104.689
+    }
+  ],
+  "tests": [
+    {
+      "name": "CT-DEV-01 Login valido com usuario do demo",
+      "status": "PASS",
+      "elapsed_seconds": 18.994
+    },
+    {
+      "name": "CT-DEV-02 Login sem credenciais exibe validacao",
+      "status": "PASS",
+      "elapsed_seconds": 17.816
+    },
+    {
+      "name": "CT-DEV-03 Usuario bloqueado exibe mensagem",
+      "status": "PASS",
+      "elapsed_seconds": 18.686
+    },
+    {
+      "name": "CT-DEV-04 Adicionar produto ao carrinho",
+      "status": "PASS",
+      "elapsed_seconds": 22.915
+    },
+    {
+      "name": "CT-DEV-05 Background e foreground preservam a sessao",
+      "status": "PASS",
+      "elapsed_seconds": 26.277
+    }
+  ]
+}

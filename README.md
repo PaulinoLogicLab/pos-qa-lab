@@ -25,6 +25,8 @@ idempotência, cancelamento, estorno, parcelamento, reinício e atualização de
 
 Detalhes em [relatório de execução](docs/05_relatorio-execucao.md) e [relatório de defeitos](docs/06_relatorio-defeitos.md).
 
+**Evidências versionadas:** [índice](docs/evidencias/README.md) · [núcleo/ISO](docs/evidencias/core-2026-11-19/summary.json) · [device](docs/evidencias/device-2026-11-19/summary.json)
+
 ## O que o projeto cobre
 
 - **Venda** aprovada e negada, com código de resposta.

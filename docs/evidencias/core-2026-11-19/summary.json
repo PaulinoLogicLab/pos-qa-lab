@@ -1,0 +1,141 @@
+{
+  "total": 18,
+  "passed": 18,
+  "failed": 0,
+  "skipped": 0,
+  "elapsed_seconds": 0.64,
+  "suites": [
+    {
+      "name": "01 Sales",
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "elapsed_seconds": 0.084
+    },
+    {
+      "name": "02 Cancellation Refund",
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "elapsed_seconds": 0.22
+    },
+    {
+      "name": "03 Resilience",
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "elapsed_seconds": 0.183
+    },
+    {
+      "name": "04 Contracts Observability",
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "elapsed_seconds": 0.133
+    },
+    {
+      "name": "06 Iso8583 Lab",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "elapsed_seconds": 0.016
+    }
+  ],
+  "tests": [
+    {
+      "name": "CT-PAY-01 Venda aprovada com chave de idempotencia",
+      "status": "PASS",
+      "elapsed_seconds": 0.043
+    },
+    {
+      "name": "CT-PAY-02 Venda negada com codigo de resposta",
+      "status": "PASS",
+      "elapsed_seconds": 0.027
+    },
+    {
+      "name": "CT-PAY-05 Parcelamento em tres vezes com arredondamento",
+      "status": "PASS",
+      "elapsed_seconds": 0.014
+    },
+    {
+      "name": "CT-PAY-03 Cancelamento antes da captura",
+      "status": "PASS",
+      "elapsed_seconds": 0.072
+    },
+    {
+      "name": "CT-PAY-04 Estorno total e parcial apos captura",
+      "status": "PASS",
+      "elapsed_seconds": 0.092
+    },
+    {
+      "name": "CT-PAY-06 Transicoes invalidas sao rejeitadas",
+      "status": "PASS",
+      "elapsed_seconds": 0.056
+    },
+    {
+      "name": "CT-RES-01 Repeticao com a mesma chave nao cobra duas vezes",
+      "status": "PASS",
+      "elapsed_seconds": 0.036
+    },
+    {
+      "name": "CT-RES-02 Timeout seguido de retry nao duplica a transacao",
+      "status": "PASS",
+      "elapsed_seconds": 0.06
+    },
+    {
+      "name": "CT-RES-03 Fila offline sincroniza quando a conexao volta",
+      "status": "PASS",
+      "elapsed_seconds": 0.059
+    },
+    {
+      "name": "CT-RES-04 Reinicio do terminal preserva a fila offline",
+      "status": "PASS",
+      "elapsed_seconds": 0.029
+    },
+    {
+      "name": "CT-CON-01 Contrato rejeita payload e cabecalhos invalidos",
+      "status": "PASS",
+      "elapsed_seconds": 0.085
+    },
+    {
+      "name": "CT-OBS-01 Correlation ID aparece na resposta, no banco e no evento",
+      "status": "PASS",
+      "elapsed_seconds": 0.04
+    },
+    {
+      "name": "CT-CON-02 Sync rejeita transacao de outro terminal",
+      "status": "PASS",
+      "elapsed_seconds": 0.009
+    },
+    {
+      "name": "CT-ISO-01 Parse de mensagem 0100",
+      "status": "PASS",
+      "elapsed_seconds": 0.005
+    },
+    {
+      "name": "CT-ISO-02 Parse de resposta 0110 com codigo 39",
+      "status": "PASS",
+      "elapsed_seconds": 0.002
+    },
+    {
+      "name": "CT-ISO-03 Bitmap secundario e campo 70",
+      "status": "PASS",
+      "elapsed_seconds": 0.002
+    },
+    {
+      "name": "CT-ISO-04 Mensagens invalidas sao rejeitadas",
+      "status": "PASS",
+      "elapsed_seconds": 0.005
+    },
+    {
+      "name": "CT-ISO-05 Round-trip build e parse",
+      "status": "PASS",
+      "elapsed_seconds": 0.002
+    }
+  ]
+}

@@ -94,6 +94,8 @@ Detalhes no [relatório de defeitos](06_relatorio-defeitos.md).
 - `reports/device_run/log.html`
 - `reports/device_run/output.xml`
 - `reports/device_run/summary.json`
+- `docs/evidencias/device-2026-11-19/summary.json`
+- `docs/evidencias/core-2026-11-19/summary.json`
 - `reports/logcat/` (quando houver falha de device)
 
 ## 8. Observações e limites
