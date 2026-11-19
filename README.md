@@ -1,6 +1,7 @@
 # POS QA Lab — Robot Framework + Python
 
 [![robot-core](https://github.com/PaulinoLogicLab/pos-qa-lab/actions/workflows/robot.yml/badge.svg)](https://github.com/PaulinoLogicLab/pos-qa-lab/actions/workflows/robot.yml)
+[![Release](https://img.shields.io/github/v/release/PaulinoLogicLab/pos-qa-lab)](https://github.com/PaulinoLogicLab/pos-qa-lab/releases/tag/v1.0.0)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Laboratório público de qualidade para uma **jornada de pagamento simulada** e um **terminal Android de demonstração**.

@@ -96,9 +96,9 @@ Use este roteiro quando houver equipamento real:
 - [x] device suite 5/5
 - [x] `python scripts/release_check.py`
 - [x] `CHANGELOG.md` e versão `1.0.0`
-- [ ] tag `v1.0.0`
-- [ ] GitHub Release
-- [ ] evidências publicadas ou anexadas
+- [x] tag `v1.0.0`
+- [x] GitHub Release
+- [x] evidências publicadas ou anexadas
 
 ## 7. Riscos residuais
 
