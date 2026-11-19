@@ -1,5 +1,8 @@
 # POS QA Lab — Robot Framework + Python
 
+[![robot-core](https://github.com/PaulinoLogicLab/pos-qa-lab/actions/workflows/robot.yml/badge.svg)](https://github.com/PaulinoLogicLab/pos-qa-lab/actions/workflows/robot.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Laboratório público de qualidade para uma **jornada de pagamento simulada** e um **terminal Android de demonstração**.
 O objetivo é exercitar, com evidência, o tipo de falha que aparece em POS: timeout, perda de conexão, retry,
 idempotência, cancelamento, estorno, parcelamento, reinício e atualização de aplicativo.
@@ -18,6 +21,7 @@ idempotência, cancelamento, estorno, parcelamento, reinício e atualização de
 | Testes unitários Python | **25 aprovados** |
 | Casos de dispositivo implementados | **5** (não executados neste ambiente) |
 | Defeitos do laboratório corrigidos | **3** (+1 achado de automação) |
+| CI | **18/18 no Ubuntu + Python 3.12** |
 
 Detalhes em [relatório de execução](docs/05_relatorio-execucao.md) e [relatório de defeitos](docs/06_relatorio-defeitos.md).
 

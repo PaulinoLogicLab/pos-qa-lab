@@ -7,6 +7,9 @@
 **Robot Framework:** 7.5.1
 **Comando:** `python scripts/run_suite.py --exclude device`
 
+**CI:** GitHub Actions `robot-core` em Ubuntu + Python 3.12, execução 18/18 aprovada em 19/11/2026
+(run `44536411506`).
+
 ## 1. Resumo
 
 | Métrica | Valor |
