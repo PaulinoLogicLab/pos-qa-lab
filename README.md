@@ -19,10 +19,11 @@ idempotência, cancelamento, estorno, parcelamento, reinício e atualização de
 | Reprovados | **0** |
 | Tempo somado dos casos | **4,24 s (núcleo/ISO) + 104,69 s (device)** |
 | Execução paralela | **37/37 em 4 processos Pabot** |
+| Docker Compose | **37/37 no container Linux** |
 | Testes unitários Python | **39 aprovados** |
 | Casos de dispositivo | **5/5 aprovados em emulador Android 16** |
-| Defeitos do laboratório corrigidos | **3** (+7 achados de automação/implementação) |
-| CI | **37/37 em Python 3.11, 3.12 e 3.13** |
+| Defeitos do laboratório corrigidos | **3** (+8 achados de automação/implementação) |
+| CI | **37/37 em Python 3.11, 3.12 e 3.13 + job Docker** |
 
 Detalhes em [relatório de execução](docs/05_relatorio-execucao.md) e [relatório de defeitos](docs/06_relatorio-defeitos.md).
 
@@ -45,6 +46,7 @@ Detalhes em [relatório de execução](docs/05_relatorio-execucao.md) e [relató
 - **Android**: login, validação, carrinho, background/foreground e atualização de APK.
 - **Robot de produção**: library Python de negócio, testes data-driven, Pabot, listener de evidência
   e CI matrix em três versões do Python.
+- **Linux e operação**: Dockerfile, Docker Compose, Makefile, scripts shell, runbook e job Docker no CI.
 
 ## Arquitetura
 
@@ -115,6 +117,19 @@ python scripts/run_parallel.py --processes 4
 O listener grava um JSONL por processo em `reports/*/evidence/`, com início, fim, tags, status e tempo
 de cada caso.
 
+## Docker
+
+```bash
+docker compose up -d api
+docker compose up --abort-on-container-exit --exit-code-from tests tests
+docker compose down -v
+```
+
+O serviço `tests` compartilha o volume SQLite com a API e grava os relatórios em `./reports`.
+O profile `parallel` roda a suíte com Pabot dentro do container.
+
+Guia completo: [runbook Linux](docs/09_runbook-linux.md).
+
 ## Device suite
 
 **Resultado:** 5/5 aprovados em 19/11/2026 no emulador `Pixel_8_Pro`
@@ -179,6 +194,7 @@ pos-qa-lab/
 - [Relatório de defeitos](docs/06_relatorio-defeitos.md)
 - [Limitações](docs/07_limitacoes.md)
 - [Arquitetura Robot](docs/08_robot-arquitetura.md)
+- [Runbook Linux](docs/09_runbook-linux.md)
 
 ## Licença
 

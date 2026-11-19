@@ -1,7 +1,7 @@
 # 02 — Plano de teste
 
 **Projeto:** POS QA Lab
-**Versão:** 0.3.0
+**Versão:** 0.4.0
 **Data:** 19/11/2026
 
 ## 1. Estratégia
@@ -36,6 +36,7 @@ Teste baseado em risco, com foco nas falhas que mais impactam uma jornada de pag
 | Uvicorn | 0.54.0 |
 | Banco | SQLite local (`data/pos_qa.db`) |
 | API | `http://127.0.0.1:8000` |
+| Docker | `python:3.12-slim`, Compose com `api` + `tests` |
 | Device | Android + Appium 2 + UiAutomator2 + My Demo App |
 
 ## 4. Dados de teste
@@ -71,13 +72,27 @@ python scripts/summarize_results.py
 pytest
 ```
 
+Docker:
+
+```bash
+docker compose up --abort-on-container-exit --exit-code-from tests tests
+```
+
+Makefile:
+
+```bash
+make test
+make docker-test
+```
+
 O runner:
 
-1. inicia a API em segundo plano;
-2. espera `/health`;
-3. executa o Robot;
-4. encerra a API;
-5. grava `reports/robot/api.log`.
+1. verifica se a porta 8000 está livre;
+2. inicia a API em segundo plano;
+3. espera `/health`;
+4. executa o Robot;
+5. encerra a API;
+6. grava `reports/robot/api.log`.
 
 ## 8. Evidência por caso
 

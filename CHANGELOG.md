@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.4.0 — 19/11/2026
+
+### Added
+
+- Dockerfile multi-stage simples em `python:3.12-slim`, usuário não-root e volume `/app/data`.
+- `docker-compose.yml` com `api`, `tests` e profile `parallel`.
+- Makefile com `lint`, `unit`, `robot`, `parallel`, `device`, `test`, `up`, `down`, `logs` e `docker-test`.
+- Scripts shell `run_core.sh`, `run_device.sh` e `collect_logs.sh`.
+- Runbook Linux em `docs/09_runbook-linux.md`.
+- Job Docker no GitHub Actions.
+
+### Changed
+
+- Bibliotecas Robot leem `API_URL` do ambiente, permitindo API local ou `http://api:8000`.
+- Runner falha se já houver uma API na porta 8000, evitando misturar banco local e Docker.
+
+### Fixed
+
+- `FIND-LAB-011`: runner local podia usar a API do Docker e ler banco diferente.
+
 ## 0.3.0 — 19/11/2026
 
 ### Added

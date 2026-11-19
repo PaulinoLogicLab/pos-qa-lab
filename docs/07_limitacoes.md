@@ -32,6 +32,7 @@ Este documento existe para evitar que o laboratório seja lido como algo que ele
 - A captura parcial não libera automaticamente o saldo restante da autorização.
 - O Pabot compartilha o banco entre workers; a massa é isolada por chave/terminal.
 - O listener registra ciclo de vida e status, não request/response HTTP completos.
+- O Compose é de laboratório; não há hardening de produção, TLS ou gestão de segredos.
 
 ## 3. O que o device suite cobre
 

@@ -8,7 +8,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from run_suite import ROOT, wait_for_api
+from run_suite import ROOT, api_is_up, wait_for_api
 
 REPORTS = ROOT / "reports" / "pabot"
 
@@ -21,6 +21,7 @@ def main() -> int:
     parser.add_argument("--include", default=None)
     parser.add_argument("--exclude", default="device")
     parser.add_argument("--port", type=int, default=8000)
+    parser.add_argument("--no-api", action="store_true")
     args = parser.parse_args()
 
     outputdir = Path(args.outputdir)
@@ -35,30 +36,40 @@ def main() -> int:
         stale.unlink()
     env["ROBOT_EVIDENCE_DIR"] = str(evidence_dir)
 
-    api_log = (outputdir / "api.log").open("w", encoding="utf-8")
-    api_process = subprocess.Popen(
-        [
-            sys.executable,
-            "-m",
-            "uvicorn",
-            "src.api.main:app",
-            "--host",
-            "127.0.0.1",
-            "--port",
-            str(args.port),
-        ],
-        cwd=ROOT,
-        env=env,
-        stdout=api_log,
-        stderr=subprocess.STDOUT,
-        text=True,
-    )
-    if not wait_for_api(f"http://127.0.0.1:{args.port}"):
-        api_log.flush()
-        print("API nao iniciou.")
-        api_process.terminate()
-        api_log.close()
-        return 1
+    api_process = None
+    api_log = None
+    if not args.no_api:
+        api_url = f"http://127.0.0.1:{args.port}"
+        if api_is_up(api_url):
+            print(
+                f"Ja existe uma API respondendo em {api_url}. "
+                "Pare o container/processo ou use --no-api."
+            )
+            return 1
+        api_log = (outputdir / "api.log").open("w", encoding="utf-8")
+        api_process = subprocess.Popen(
+            [
+                sys.executable,
+                "-m",
+                "uvicorn",
+                "src.api.main:app",
+                "--host",
+                "127.0.0.1",
+                "--port",
+                str(args.port),
+            ],
+            cwd=ROOT,
+            env=env,
+            stdout=api_log,
+            stderr=subprocess.STDOUT,
+            text=True,
+        )
+        if not wait_for_api(f"http://127.0.0.1:{args.port}"):
+            api_log.flush()
+            print("API nao iniciou.")
+            api_process.terminate()
+            api_log.close()
+            return 1
 
     command = [
         sys.executable,
@@ -81,12 +92,14 @@ def main() -> int:
         result = subprocess.run(command, cwd=ROOT, env=env)
         return result.returncode
     finally:
-        api_process.terminate()
-        try:
-            api_process.wait(timeout=8)
-        except subprocess.TimeoutExpired:
-            api_process.kill()
-        api_log.close()
+        if api_process is not None:
+            api_process.terminate()
+            try:
+                api_process.wait(timeout=8)
+            except subprocess.TimeoutExpired:
+                api_process.kill()
+        if api_log is not None:
+            api_log.close()
 
 
 if __name__ == "__main__":

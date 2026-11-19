@@ -1,7 +1,7 @@
 # 08 — Arquitetura Robot de produção
 
 **Projeto:** POS QA Lab
-**Versão:** 0.3.0
+**Versão:** 0.4.0
 **Data:** 19/11/2026
 
 ## 1. Camadas
@@ -58,7 +58,7 @@ python scripts/run_parallel.py --processes 4
 - `PABOTQUEUEINDEX` fica disponível para isolar massa, se necessário.
 - Suítes que compartilham estado devem ser marcadas `serial`; a suíte de liquidação já usa terminais
   únicos por caso.
-- O tempo de parede foi 6,34 s; a soma dos casos foi 4,31 s. Em suítes curtas, o overhead do Pabot
+- O tempo de parede foi 7,84 s; a soma dos casos foi 3,96 s. Em suítes curtas, o overhead do Pabot
   supera o ganho — o valor aqui é a capacidade de escalar.
 
 ## 5. Listener de evidência

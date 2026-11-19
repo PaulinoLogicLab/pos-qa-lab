@@ -9,7 +9,7 @@
 **Comando (device):** `RUN_DEVICE_TESTS=1 python scripts/run_suite.py --device --no-api --outputdir reports/device_run`
 
 **CI:** GitHub Actions `robot-core` em Ubuntu + Python 3.11/3.12/3.13, execução 37/37 aprovada em
-19/11/2026; Pabot 37/37 na versão 3.12.
+19/11/2026; Pabot 37/37 na versão 3.12; job Docker separado.
 
 ## 1. Resumo
 
@@ -21,6 +21,7 @@
 | Ignorados | 0 |
 | Tempo | 4,24 s (núcleo/ISO) + 104,69 s (device) |
 | Execução paralela | 37/37 em 4 processos Pabot |
+| Docker Compose | 37/37 no container Linux |
 | Testes unitários Python | 39 aprovados |
 | Suítes | 10 (9 de núcleo/ISO + 1 de device) |
 | Casos de dispositivo | 5/5 aprovados em emulador |
@@ -46,9 +47,19 @@
 |---|---:|
 | Processos | 4 |
 | Casos | 37/37 |
-| Soma dos casos | 4,31 s |
-| Tempo de parede | 6,34 s |
+| Soma dos casos | 3,96 s |
+| Tempo de parede | 7,84 s |
 | Evidência | `reports/pabot/report.html` e `reports/pabot/summary.json` |
+
+### 2.2 Docker Compose
+
+| Métrica | Valor |
+|---|---:|
+| Serviços | `api` + `tests` |
+| Casos | 37/37 |
+| Resultado | containers encerrados com código 0 |
+| Profile `parallel` | 37/37 em 4 processos |
+| Evidência | `reports/robot/report.html` montado do container |
 
 ## 3. Cobertura de estados
 
@@ -103,6 +114,7 @@ O script `scripts/device_upgrade_check.py` implementa a evidência de instalaç�
 | FIND-LAB-008 | `Acquirer` não expunha `transaction_count`; teste unitário detectou | Baixa | Corrigido |
 | FIND-LAB-009 | Pabot não encontrava o executável `robot` no PATH do venv | Baixa | Corrigido |
 | FIND-LAB-010 | Listener usava `data.starttime`, atributo inexistente no Robot 7 | Baixa | Corrigido |
+| FIND-LAB-011 | Runner local podia se conectar à API do Docker na mesma porta e ler banco diferente | Média | Corrigido |
 
 Detalhes no [relatório de defeitos](06_relatorio-defeitos.md).
 
@@ -131,7 +143,7 @@ Detalhes no [relatório de defeitos](06_relatorio-defeitos.md).
 ## 8. Observações e limites
 
 - Os 4,24 s são a soma dos casos de núcleo/ISO; o device suite levou 104,69 s.
-- O Pabot executa os mesmos 37 casos em 4 processos; o tempo de parede foi 6,34 s.
+- O Pabot executa os mesmos 37 casos em 4 processos; o tempo de parede foi 7,84 s.
 - A concorrência usa 10 threads e uma barreira; o timeout usa atraso de 1,5 s e cliente de 0,5 s.
 - A API é local e simulada; não há latência de rede real.
 - O ISO 8583 é um laboratório de formato, não uma implementação de produção.

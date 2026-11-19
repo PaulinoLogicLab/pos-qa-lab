@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -15,8 +16,10 @@ if str(ROOT) not in sys.path:
 
 
 class PaymentApi:
-    def __init__(self, base_url: str = "http://127.0.0.1:8000") -> None:
-        self.base_url = base_url.rstrip("/")
+    def __init__(self, base_url: str | None = None) -> None:
+        self.base_url = (
+            base_url or os.getenv("API_URL", "http://127.0.0.1:8000")
+        ).rstrip("/")
 
     def _request(self, method: str, path: str, timeout: float = 20, **kwargs):
         try:
