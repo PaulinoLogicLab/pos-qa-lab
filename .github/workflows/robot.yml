@@ -1,0 +1,34 @@
+name: robot-core
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Lint
+        run: ruff check .
+      - name: Unit tests
+        run: pytest
+      - name: Robot core and ISO lab
+        run: python scripts/run_suite.py --exclude device
+      - name: Summarize results
+        if: always()
+        run: python scripts/summarize_results.py
+      - name: Upload Robot reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: robot-reports
+          path: reports/robot/
