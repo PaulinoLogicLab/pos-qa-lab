@@ -1,7 +1,7 @@
 # 09 — Runbook Linux
 
 **Projeto:** POS QA Lab
-**Versão:** 0.4.0
+**Versão:** 0.5.0
 **Data:** 19/11/2026
 
 ## 1. Pré-requisitos
@@ -79,6 +79,12 @@ docker compose --profile parallel run --rm parallel
 ./scripts/run_core.sh
 ./scripts/run_device.sh
 ./scripts/collect_logs.sh
+```
+
+Hardware simulado:
+
+```bash
+python scripts/run_suite.py --include hardware
 ```
 
 `collect_logs.sh` empacota `reports/robot`, `reports/pabot`, `reports/device_run` e `reports/logcat`

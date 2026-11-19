@@ -2,7 +2,7 @@
 
 **Projeto:** POS QA Lab
 **Data de execução:** 19/11/2026
-**Total:** 42 casos (37 de núcleo/ISO + 5 de dispositivo)
+**Total:** 49 casos (44 de núcleo/ISO/hardware + 5 de dispositivo)
 
 ## Dados de teste
 
@@ -125,7 +125,22 @@ retry após 2 s recupera a mesma transação e mantém uma linha.
 da library `SalesWorkflow.py`. Cada linha é um caso; a library valida HTTP 201, status, código de
 resposta e quantidade de parcelas.
 
-## 11. Dispositivo — My Demo App
+## 11. Hardware e periféricos
+
+| ID | Objetivo | Prioridade | Status |
+|---|---|---|---|
+| CT-HW-01 | Venda com pinpad aprovado e impressora OK | P1 | Aprovado |
+| CT-HW-02 | Impressora sem papel deixa recibo pendente e permite reimpressão | P1 | Aprovado |
+| CT-HW-03 | Impressora offline e reconexão com reimpressão | P1 | Aprovado |
+| CT-HW-04 | Timeout do pinpad não autoriza venda | P0 | Aprovado |
+| CT-HW-05 | Cancelamento no pinpad não autoriza venda | P1 | Aprovado |
+| CT-HW-06 | Reboot no meio da transação preserva fila offline | P0 | Aprovado |
+| CT-HW-07 | Atualização de firmware/configuração preserva fila | P1 | Aprovado |
+
+**Modelo:** simuladores determinísticos em `src/terminal/peripherals.py`; não são drivers de hardware real.
+**Evidência:** `reports/robot/report.html` e JSONL do listener.
+
+## 12. Dispositivo — My Demo App
 
 | ID | Objetivo | Prioridade | Status |
 |---|---|---|---|
@@ -139,7 +154,7 @@ resposta e quantidade de parcelas.
 My Demo App 2.3.0, Appium 3.5.0 e UiAutomator2 7.0.0.
 **Pendência:** o script `scripts/device_upgrade_check.py` ainda não foi executado.
 
-## 12. Casos não aplicáveis
+## 13. Casos não aplicáveis
 
 - Impressão térmica, pinpad, EMV, PCI PTS e certificação de bandeira: fora do escopo do laboratório.
 - Teste de carga e segurança ofensiva: evolução futura, não parte desta entrega.

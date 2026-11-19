@@ -3,7 +3,7 @@
 **Projeto:** POS QA Lab — Robot Framework + Python
 **Responsável:** Emanuelle Gonçalves Paulino
 **Data:** 19/11/2026
-**Versão:** 0.4.0
+**Versão:** 0.5.0
 
 ## 1. Contexto
 
@@ -27,12 +27,13 @@ Demonstrar, com código e evidência:
 
 - API de adquirente simulada em FastAPI + SQLite.
 - Terminal simulator com máquina de estados e fila offline.
-- 37 casos de núcleo/ISO em Robot, incluindo 5 data-driven e 6 de fluxo ISO 8583.
+- 44 casos de núcleo/ISO/hardware em Robot, incluindo 5 data-driven, 7 de hardware e 6 de fluxo ISO 8583.
 - 5 casos de dispositivo implementados e executados em emulador Android.
-- 39 testes unitários Python.
+- 45 testes unitários Python.
 - Execução paralela com Pabot e listener de evidência JSONL.
 - Dockerfile, Docker Compose, Makefile e scripts shell para execução em Linux.
 - Runbook Linux com healthcheck, logs, troubleshooting e coleta de evidências.
+- Simuladores de impressora, pinpad e ciclo do terminal (reboot, firmware e configuração).
 - Runner que sobe e derruba a API automaticamente.
 - Relatórios Robot (`output.xml`, `log.html`, `report.html`) e resumo em JSON.
 - Documentação de escopo, plano, casos, matriz, execução, defeitos e limitações.

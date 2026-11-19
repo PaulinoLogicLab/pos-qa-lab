@@ -10,6 +10,8 @@ Este documento existe para evitar que o laboratório seja lido como algo que ele
 - **Adquirente:** a API FastAPI é local e simulada. Não há conexão com Stone, Cielo, Rede, Getnet ou
   qualquer adquirente real.
 - **Terminal:** o `TerminalSimulator` é uma máquina de estados em Python + SQLite; não é firmware de POS.
+- **Periféricos:** impressora, pinpad e ciclo do terminal são modelos determinísticos; não são drivers
+  de hardware, ESC/POS, USB, serial ou Bluetooth.
 - **Pagamento:** tokens (`tok_approved`, `tok_declined`, `tok_timeout`) substituem um gateway real.
 - **ISO 8583:** parser/construtor didático em ASCII, com um subconjunto de campos. Não há BCD, MAC,
   rede, TLS ou certificação.

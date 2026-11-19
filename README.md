@@ -14,16 +14,16 @@ idempotência, cancelamento, estorno, parcelamento, reinício e atualização de
 
 | Métrica | Valor |
 |---|---:|
-| Casos Robot executados | **42** |
-| Aprovados | **42** |
+| Casos Robot executados | **49** |
+| Aprovados | **49** |
 | Reprovados | **0** |
-| Tempo somado dos casos | **4,24 s (núcleo/ISO) + 104,69 s (device)** |
-| Execução paralela | **37/37 em 4 processos Pabot** |
-| Docker Compose | **37/37 no container Linux** |
-| Testes unitários Python | **39 aprovados** |
+| Tempo somado dos casos | **3,89 s (núcleo/ISO) + 104,69 s (device)** |
+| Execução paralela | **44/44 em 4 processos Pabot** |
+| Docker Compose | **44/44 no container Linux** |
+| Testes unitários Python | **45 aprovados** |
 | Casos de dispositivo | **5/5 aprovados em emulador Android 16** |
-| Defeitos do laboratório corrigidos | **3** (+8 achados de automação/implementação) |
-| CI | **37/37 em Python 3.11, 3.12 e 3.13 + job Docker** |
+| Defeitos do laboratório corrigidos | **3** (+10 achados de automação/implementação) |
+| CI | **44/44 em Python 3.11, 3.12 e 3.13 + job Docker** |
 
 Detalhes em [relatório de execução](docs/05_relatorio-execucao.md) e [relatório de defeitos](docs/06_relatorio-defeitos.md).
 
@@ -47,6 +47,8 @@ Detalhes em [relatório de execução](docs/05_relatorio-execucao.md) e [relató
 - **Robot de produção**: library Python de negócio, testes data-driven, Pabot, listener de evidência
   e CI matrix em três versões do Python.
 - **Linux e operação**: Dockerfile, Docker Compose, Makefile, scripts shell, runbook e job Docker no CI.
+- **Hardware simulado**: impressora (papel/acesso), pinpad (timeout/cancelamento), reboot,
+  atualização de firmware e configuração.
 
 ## Arquitetura
 
@@ -169,9 +171,9 @@ pos-qa-lab/
   src/terminal/         # simulador com fila offline
   iso8583_lab/          # parser/construtor didático
   libraries/            # bibliotecas Robot
-  robot/suites/         # 37 casos de núcleo, captura/liquidação, concorrência, data-driven e ISO
+  robot/suites/         # 44 casos de núcleo, hardware, captura/liquidação, concorrência, data-driven e ISO
   robot/device/         # 5 casos de dispositivo
-  tests/                # 39 testes unitários
+  tests/                # 45 testes unitários
   scripts/              # runner, resumo, download e upgrade
 ```
 
@@ -195,6 +197,7 @@ pos-qa-lab/
 - [Limitações](docs/07_limitacoes.md)
 - [Arquitetura Robot](docs/08_robot-arquitetura.md)
 - [Runbook Linux](docs/09_runbook-linux.md)
+- [Hardware e periféricos](docs/10_hardware-perifericos.md)
 
 ## Licença
 

@@ -23,10 +23,12 @@
 | FIND-LAB-009 | Pabot não encontrava o executável `robot` no PATH do venv | Baixa | Corrigido |
 | FIND-LAB-010 | Listener usava `data.starttime`, inexistente no Robot 7 | Baixa | Corrigido |
 | FIND-LAB-011 | Runner local podia usar a API do Docker e ler banco diferente | Média | Corrigido |
+| FIND-LAB-012 | Workflow de hardware sobrescrevia o status da impressora para OK | Baixa | Corrigido |
+| FIND-LAB-013 | Bind mount de relatórios sem permissão no CI | Média | Corrigido |
 
 - Defeitos de produto/mock: **1** (DEF-LAB-002).
 - Defeitos de infraestrutura de teste: **2** (DEF-LAB-001 e DEF-LAB-004).
-- Achados de automação/implementação: **8** (FIND-LAB-003, 005, 006, 007, 008, 009, 010 e 011).
+- Achados de automação/implementação: **10** (FIND-LAB-003, 005, 006, 007, 008, 009, 010, 011, 012 e 013).
 
 ## DEF-LAB-001 — Runner bloqueava a API
 
@@ -232,6 +234,40 @@ local — resultados inconsistentes.
 runner falha com orientação para parar o container ou usar `--no-api`.
 
 **Reteste:** após `docker compose down -v`, 37/37 local; Docker Compose 37/37.
+
+## FIND-LAB-012 — Workflow sobrescrevia status da impressora
+
+| Campo | Conteúdo |
+|---|---|
+| Severidade | Baixa |
+| Status | Corrigido |
+| Tipo | Lógica de simulação |
+| Evidência | CT-HW-02 e CT-HW-03 retornavam `PRINTED` em vez de `PAPER_OUT`/`OFFLINE` |
+
+**Sintoma:** o teste configurava a impressora antes da venda, mas o workflow aplicava o status
+padrão `OK` durante a operação.
+
+**Correção:** `printer_status` passou a ser opcional; o workflow só altera o status quando o parâmetro
+é informado. O teste controla o estado pelo keyword `Set Printer Status`.
+
+**Reteste:** CT-HW-02 e CT-HW-03 aprovados; 7/7 de hardware e 44/44 de núcleo.
+
+## FIND-LAB-013 — Relatórios sem permissão no Docker CI
+
+| Campo | Conteúdo |
+|---|---|
+| Severidade | Média |
+| Status | Corrigido |
+| Tipo | Permissão de bind mount |
+| Evidência | `PermissionError: '/app/reports/robot'` no job Docker |
+
+**Sintoma:** no runner Linux, o diretório `./reports` era criado pelo usuário do host e o container
+rodava como `app`, sem permissão de escrita.
+
+**Correção:** `mkdir -p reports && chmod 777 reports` no job Docker e no `make docker-test`; o runbook
+documenta o requisito e a alternativa com volume nomeado.
+
+**Reteste:** job Docker verde; 44/44 no container.
 
 ## Lições
 
